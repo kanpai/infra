@@ -1,0 +1,59 @@
+{ settings, ... }:
+{
+  imports = [
+    ./disks.nix
+  ];
+
+  nixpkgs.hostPlatform = "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
+
+  boot = {
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "xhci_hcd" "ahci" "nvme" "usb_storage" "sd_mod" ];
+      kernelModules = [ "dm-snapshot" ];
+    };
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        devices = [ "/dev/nvme0n1" ];
+        efiSupport = true;
+      };
+    };
+  };
+
+  environment.persistence."/persist" = {
+    directories = [
+      "/var/logs"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/etc/ssh"
+    ];
+    files = [
+      "/etc/machine-id"
+    ];
+  };
+
+  networking = {
+    hostName = settings.hostname;
+    hostId = "ea2a80b5";
+    useNetworkd = true;
+    networkmanager.enable = true;
+    interfaces.enp6s0 = {
+      wakeOnLan.enable = true;
+      ipv4.addresses = [{ address = "192.168.1.100"; prefixLength = 24; }];
+    };
+  };
+
+  system.stateVersion = "23.11";
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:kanpai/infra";
+    allowReboot = true;
+    dates = "daily";
+    rebootWindow = { lower = "02:00"; upper = "05:00"; };
+    randomizedDelaySec = "45min";
+  };
+}
