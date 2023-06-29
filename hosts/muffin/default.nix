@@ -37,7 +37,5 @@
     ];
   };
 
-  networking.hostName = settings.name;
-
   system.stateVersion = "23.11";
 }
