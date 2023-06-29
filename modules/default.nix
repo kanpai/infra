@@ -1,4 +1,4 @@
 {
-  auto-upgrade = import ./auto-upgrade.nix;
+  auto-upgrades = import ./auto-upgrades.nix;
   ssh = import ./ssh.nix;
 }
