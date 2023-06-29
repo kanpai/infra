@@ -17,30 +17,33 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence.url = "github:nix-community/impermanence?ref=generic-subvol-names";
   };
   outputs = inputs@{ nixpkgs, conch, ... }:
     let
-      config = import ./config.nix { lib = nixpkgs.lib; };
+      lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; };
+
+      config = import ./config.nix { inherit lib; };
     in
     conch.load [
       "x86_64-darwin"
       "x86_64-linux"
     ]
       ({ pkgs, ... }: {
+        # @FIX: nix-copy-closure hangs on current version; temporary fix
+        packages = [ pkgs.nixVersions.nix_2_14 ];
         development.python.enable = true;
         operations = {
           terranix.enable = true;
           nixos-anywhere.enable = true;
-          morph.enable = true;
-          /*
           nixops = {
             enable = true;
             unstable = true;
           };
-          */
         };
-        flake.nixosConfigurations = import ./hosts { inherit inputs config; };
-        #flake.nixopsConfigurations = import ./networks { inherit inputs config; }; # i think?
+        flake = {
+          nixosConfigurations = import ./hosts { inherit lib config; };
+          nixopsConfigurations = import ./networks { inherit inputs lib config; };
+        };
       });
 }

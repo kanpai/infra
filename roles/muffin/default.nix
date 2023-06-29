@@ -1,8 +1,7 @@
-{ settings, modules, pkgs, ... }:
+{ ... }:
 {
   imports = [
-    modules.auto-upgrades
-    modules.ssh
+    ../../modules/ssh.nix
   ];
 
   users = {
