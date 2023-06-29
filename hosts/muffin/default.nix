@@ -2,6 +2,7 @@
 {
   imports = [
     ./disks.nix
+    ./networking.nix
   ];
 
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -36,16 +37,9 @@
     ];
   };
 
-  networking = {
-    hostName = settings.hostname;
-    hostId = "ea2a80b5";
-    useNetworkd = true;
-    networkmanager.enable = true;
-    interfaces.enp6s0 = {
-      wakeOnLan.enable = true;
-      ipv4.addresses = [{ address = "192.168.1.100"; prefixLength = 24; }];
-    };
   };
+
+  networking.hostName = settings.name;
 
   system.stateVersion = "23.11";
   system.autoUpgrade = {
