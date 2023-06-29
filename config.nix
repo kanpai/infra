@@ -13,10 +13,7 @@ let
         (machine: { ${machine.name} = machine; })
         (zipListsWith maker (rangeTo (length configs)) configs));
 
-  mkMachine = machine:
-    machine
-    // (if !machine ? hostname then { hostname = machine.host; } else { })
-  ;
+  mkMachine = machine: machine;
 
   secrets = {
     ssh = {
@@ -25,9 +22,8 @@ let
   };
 
   machines = {
-    muffin = mkMachine {
+    muffin = {
       name = "muffin";
-      hostname = "muffin";
       system = "x86_64-linux";
       host = ./hosts/muffin;
       roles = [ ./roles/muffin ];
