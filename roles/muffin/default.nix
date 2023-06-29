@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ settings, modules, pkgs, ... }:
 {
-  imports = [ ];
-
-  services = {
-    openssh = {
-      enable = true;
-      settings.PermitRootLogin = "prohibit-password";
-    };
-  };
+  imports = [
+    modules.ssh
+  ];
 
   users = {
     mutableUsers = false;

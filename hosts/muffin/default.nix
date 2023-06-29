@@ -31,13 +31,10 @@
       "/var/logs"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
-      "/etc/ssh"
     ];
     files = [
       "/etc/machine-id"
     ];
-  };
-
   };
 
   networking.hostName = settings.name;
