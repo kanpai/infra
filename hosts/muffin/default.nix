@@ -5,7 +5,7 @@
     ./networking.nix
   ];
 
-  nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.hostPlatform = settings.system;
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
@@ -25,7 +25,8 @@
     };
   };
 
-  environment.persistence."/persist" = {
+  environment.persistence.name = {
+    persistentStoragePath = "/persist";
     directories = [
       "/var/logs"
       "/var/lib/nixos"
