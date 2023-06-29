@@ -6,7 +6,11 @@ let
   mkHost = host:
     lib.nixosSystem {
       inherit (host) system;
-      specialArgs = { settings = host; inherit inputs lib; };
+      specialArgs = {
+        settings = host;
+        modules = import ../modules;
+        inherit inputs lib;
+      };
       modules = with inputs; [
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
