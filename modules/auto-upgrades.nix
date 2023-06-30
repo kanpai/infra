@@ -1,6 +1,5 @@
 { ... }: {
   system.autoUpgrade = {
-    enable = true;
     flake = "github:kanpai/infra";
     allowReboot = true;
     dates = "daily";
