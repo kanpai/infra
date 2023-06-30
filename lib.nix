@@ -14,6 +14,7 @@ let
       imports = with inputs; [
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
+        ./modules/common.nix
         module.host
       ] ++ module.roles;
 

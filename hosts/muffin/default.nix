@@ -26,6 +26,7 @@
   };
 
   environment.persistence.main = {
+    enable = true;
     persistentStoragePath = "/persist";
     directories = [
       "/var/logs"

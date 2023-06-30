@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ config, ... }: {
   services.openssh = {
     enable = true;
     settings = {
@@ -7,5 +7,5 @@
   };
 
   # persist host private keys (otherwise server fingerprint changes every reboot)
-  environment.persistence.main.files = map (key: key.path) config.services.openssh.hostKeys;
+  persist.files = map (key: key.path) config.services.openssh.hostKeys;
 }
