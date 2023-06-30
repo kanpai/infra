@@ -1,4 +1,4 @@
-{ settings, ... }:
+{ settings, pkgs, ... }:
 {
   imports = [
     ./disks.nix
@@ -14,6 +14,7 @@
       availableKernelModules = [ "xhci_pci" "xhci_hcd" "ahci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ "dm-snapshot" ];
     };
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
     loader = {
