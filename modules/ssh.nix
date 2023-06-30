@@ -2,6 +2,7 @@
 with lib;
 {
   services.openssh = mkDefault {
+    enable = true;
     passwordAuthentication = false;
     allowSFTP = false;
     challengeResponseAuthentication = false;
