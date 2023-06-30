@@ -16,5 +16,8 @@ with lib;
   };
 
   # persist host private keys (otherwise server fingerprint changes every reboot)
-  persist.files = map (key: key.path) config.services.openssh.hostKeys;
+  persist.files =
+    if config.services.openssh.enable
+    then map (key: key.path) config.services.openssh.hostKeys
+    else [ ];
 }
