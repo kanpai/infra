@@ -2,8 +2,6 @@
   # lock down nix to root
   nix.allowedUsers = [ "root" ];
 
-  # enable periodic scanning of filesystems
-  services.clamav.enable = true;
 
   # disable sudo
   security.sudo.enable = false;
