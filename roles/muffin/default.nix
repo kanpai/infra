@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   imports = [
-    ../../modules/ssh.nix
     ./desktop.nix
   ];
 
