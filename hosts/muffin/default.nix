@@ -36,6 +36,7 @@
     ];
     files = [
       "/etc/machine-id"
+      "/var/log/wtmp"
     ];
   };
 
