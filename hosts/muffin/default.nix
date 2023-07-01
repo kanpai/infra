@@ -30,13 +30,13 @@
     enable = true;
     persistentStoragePath = "/persist";
     directories = [
+      "/var/log"
       "/var/logs"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
     ];
     files = [
       "/etc/machine-id"
-      "/var/log/wtmp"
     ];
   };
 
