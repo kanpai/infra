@@ -1,7 +1,6 @@
 { lib, ... }: {
   # lock down nix to root
-  nix.allowedUsers = [ "root" ];
-
+  nix.settings.allowed-users = [ "root" ];
 
   # disable sudo
   security.sudo.enable = false;
