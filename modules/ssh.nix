@@ -3,14 +3,13 @@ with lib;
 {
   services.openssh = mkDefault {
     enable = true;
-    passwordAuthentication = false;
     allowSFTP = false;
-    challengeResponseAuthentication = false;
     settings = {
+      PasswordAuthentication = false;
       AllowTcpForwarding = "yes";
       AllowAgentForwarding = "no";
       AllowStreamLocalForwarding = "no";
-      X11Forwarding = "no";
+      X11Forwarding = false;
       PermitRootLogin = "prohibit-password";
     };
   };
