@@ -26,4 +26,10 @@
     hitori # sudoku game
     atomix # puzzle game
   ]);
+
+  # disable automatic sleep/hibernation
+  systemd.targets = builtins.foldl'
+    (acc: name: acc // { ${name}.enable = false; })
+    { }
+    [ "sleep" "suspend" "hibernate" "hybrid-sleep" ];
 }
