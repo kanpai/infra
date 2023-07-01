@@ -3,6 +3,7 @@
   imports = [
     ./disks.nix
     ./networking.nix
+    ./gpu.nix
   ];
 
   nixpkgs.hostPlatform = settings.system;
