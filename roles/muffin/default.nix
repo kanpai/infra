@@ -4,6 +4,7 @@
     ./desktop.nix
   ];
 
+  system.autoUpgrade.enable = true;
   services.openssh.enable = true;
 
   users = {
