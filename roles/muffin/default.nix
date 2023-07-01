@@ -4,6 +4,8 @@
     ./desktop.nix
   ];
 
+  services.openssh.enable = true;
+
   users = {
     mutableUsers = false;
     users = {
