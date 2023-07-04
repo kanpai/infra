@@ -2,6 +2,7 @@
 {
   imports = [
     ./desktop.nix
+    ./gameserver.nix
   ];
 
   system.autoUpgrade.enable = true;
