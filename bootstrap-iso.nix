@@ -9,6 +9,7 @@ in
 
   services.openssh = {
     enable = true;
+    ports = [ 12248 ];
     settings.PermitRootLogin = "yes";
   };
   users.users.root.openssh.authorizedKeys.keys = [

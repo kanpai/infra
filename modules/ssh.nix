@@ -4,6 +4,8 @@ with lib;
   services.openssh = mkDefault {
     enable = true;
     allowSFTP = false;
+    ports = [ 12248 ];
+    openFirewall = true;
     settings = {
       PasswordAuthentication = false;
       AllowTcpForwarding = "yes";
