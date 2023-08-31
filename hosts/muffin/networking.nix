@@ -7,7 +7,7 @@ let
         DHCP = "no";
       };
       address = [
-        "${settings.ip}/24"
+        "192.168.1.100/24"
       ];
       dns = [
         "9.9.9.9"

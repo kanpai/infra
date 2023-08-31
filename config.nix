@@ -27,7 +27,7 @@ let
       system = "x86_64-linux";
       host = ./hosts/muffin;
       roles = [ ./roles/muffin ];
-      ip = "192.168.1.100";
+      ip = "77.33.92.93";
     };
   };
 
