@@ -5,9 +5,9 @@ let
   mkNetwork = network:
     let
       machines = mapAttrs
-        (_: machine: { settings, ... }: {
+        (_: machine: { host, ... }: {
           imports = [ (lib.mkModule machine) ];
-          deployment.targetHost = settings.ip;
+          deployment.targetHost = host.ip;
         })
         network.machines;
     in

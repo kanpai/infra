@@ -1,4 +1,4 @@
-{ settings, pkgs, ... }:
+{ host, pkgs, ... }:
 {
   imports = [
     ./disks.nix
@@ -6,7 +6,7 @@
     ./gpu.nix
   ];
 
-  nixpkgs.hostPlatform = settings.system;
+  nixpkgs.hostPlatform = host.system;
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 

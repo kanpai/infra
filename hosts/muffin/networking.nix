@@ -1,4 +1,4 @@
-{ settings, ... }:
+{ host, ... }:
 let
   networks = {
     "10-lan" = {
@@ -31,7 +31,7 @@ in
   };
 
   networking = {
-    hostName = settings.name;
+    hostName = host.name;
     dhcpcd.enable = false;
   };
 }

@@ -19,7 +19,7 @@ let
       ] ++ module.roles;
 
       _module.args = {
-        settings = module;
+        host = module;
         modules = ../modules;
         lib = inputs.nixpkgs.lib // lib;
         inherit inputs args;

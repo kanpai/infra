@@ -1,4 +1,4 @@
-{ settings, ... }: {
+{ host, ... }: {
   imports = [
     ./impermanence.nix
     ./security.nix
@@ -7,5 +7,5 @@
     ./minecraft.nix
   ];
 
-  system.name = settings.name;
+  system.name = host.name;
 }
