@@ -26,7 +26,7 @@ let
       name = "muffin";
       system = "x86_64-linux";
       host = ./hosts/muffin;
-      roles = [ ./roles/muffin ];
+      roles = [ ./roles/muffin ./roles/tor/guard ];
       ip = "77.33.92.93";
     };
   };
