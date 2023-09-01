@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   imports = [
-    ./desktop.nix
     ./gameserver.nix
   ];
 
