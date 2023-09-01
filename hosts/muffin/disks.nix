@@ -98,11 +98,12 @@ in
       data = {
         type = "lvm_vg";
         lvs = {
-          data = {
-            size = "2T";
+          persist = {
+            size = "100%free";
             content = {
               type = "filesystem";
               format = "ext4";
+              mountpoint = "/persist";
             };
           };
         };
@@ -111,19 +112,11 @@ in
         type = "lvm_vg";
         lvs = {
           nix = {
-            size = "400G";
+            size = "100%free";
             content = {
               type = "filesystem";
               format = "btrfs";
               mountpoint = "/nix";
-            };
-          };
-          persist = {
-            size = "5G";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/persist";
             };
           };
         };
