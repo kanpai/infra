@@ -1,5 +1,6 @@
 { host, ... }: {
   imports = [
+    ./acme.nix
     ./impermanence.nix
     ./security.nix
     ./ssh.nix
