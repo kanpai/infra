@@ -5,6 +5,7 @@
     ./security.nix
     ./ssh.nix
     ./auto-upgrades.nix
+    ./nginx.nix
     ./minecraft.nix
   ];
 
