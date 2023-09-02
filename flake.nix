@@ -17,7 +17,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence?ref=generic-subvol-names";
+    impermanence.url = "github:nix-community/impermanence";
   };
   outputs = inputs@{ nixpkgs, conch, ... }:
     let
