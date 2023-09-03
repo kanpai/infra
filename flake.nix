@@ -30,8 +30,6 @@
       "x86_64-linux"
     ]
       ({ pkgs, ... }: {
-        # @FIX: nix-copy-closure hangs on current version; temporary fix
-        packages = [ pkgs.nixVersions.nix_2_14 ];
         development.python.enable = true;
         operations = {
           terranix.enable = true;
