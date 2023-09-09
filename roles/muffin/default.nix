@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./monitoring.nix
     ./gameserver.nix
   ];
 

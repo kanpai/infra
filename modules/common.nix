@@ -6,6 +6,7 @@
     ./ssh.nix
     ./auto-upgrades.nix
     ./nginx.nix
+    ./prometheus.nix
     ./minecraft.nix
   ];
 
