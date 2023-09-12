@@ -18,6 +18,14 @@ in
     };
   };
 
+  users.users = lib.mkIf cfg.acceptTerms (
+    let
+      nginx = config.services.nginx;
+    in
+    {
+      ${nginx.user}.extraGroups = lib.optional nginx.enable "acme";
+    });
+
   persist.directories = lib.optionals cfg.acceptTerms
     (map
       (cert: { inherit (cert) directory; })
