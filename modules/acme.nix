@@ -1,4 +1,12 @@
-{ ... }: {
+{ lib, config, ... }:
+let
+  persistCert = cert: {
+    inherit (cert) directory;
+  };
+
+  cfg = config.security.acme;
+in
+{
   security.acme = {
     acceptTerms = true;
     defaults = {
@@ -9,4 +17,9 @@
       # https://acme-staging-v02.api.letsencrypt.org/directory
     };
   };
+
+  persist.directories = lib.optionals cfg.acceptTerms
+    (map
+      (cert: { inherit (cert) directory; })
+      (lib.attrsets.attrValues cfg.certs));
 }
