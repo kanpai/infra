@@ -5,7 +5,7 @@
     ./gameserver.nix
   ];
 
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade.enable = false;
   services.openssh.enable = true;
 
   users = {
