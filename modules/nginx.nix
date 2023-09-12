@@ -1,8 +1,8 @@
 { lib, ... }: {
-  services.nginx = {
-    enable = lib.mkDefault false ;
+  services.nginx = lib.mkDefault {
+    enable = false;
     recommendedProxySettings = true;
-    virtualHosts.default = lib.mkDefault {
+    virtualHosts.default = {
       default = true;
       locations."/".return = "444"; # no response
     };
