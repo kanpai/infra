@@ -7,7 +7,6 @@
     ./auto-upgrades.nix
     ./nginx.nix
     ./prometheus.nix
-    ./minecraft.nix
   ];
 
   system.name = host.name;
