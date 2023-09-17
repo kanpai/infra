@@ -20,11 +20,12 @@ in
 
   users.users = lib.mkIf cfg.acceptTerms (
     let
-      nginx = config.services.nginx;
+      addGroup = { user, enabled }: { ${user}.extraGroups = lib.optional enabled "acme"; };
     in
-    {
-      ${nginx.user}.extraGroups = lib.optional nginx.enable "acme";
-    });
+    builtins.foldl' (l: r: l // (addGroup r)) { } (with config.services; [
+      { user = nginx.user; enabled = nginx.enable; }
+    ])
+  );
 
   persist.directories = lib.optionals cfg.acceptTerms
     (map
