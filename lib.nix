@@ -14,11 +14,13 @@ let
       imports = with inputs; [
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
+        agenix.nixosModules.age
         ./modules/common.nix
         module.host
       ] ++ module.roles;
 
-      _module.args = {
+      _module.args = rec {
+        settings = import ./config.nix { inherit lib; };
         host = module;
         modules = ../modules;
         lib = inputs.nixpkgs.lib // lib;

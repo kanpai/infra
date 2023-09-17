@@ -12,9 +12,7 @@ in
     ports = [ 12248 ];
     settings.PermitRootLogin = "yes";
   };
-  users.users.root.openssh.authorizedKeys.keys = [
-    config.secrets.ssh.bootstrap
-  ];
+  users.users.root.openssh.authorizedKeys.keys = map (admin: admin.ssh.key) config.admins;
 
   networking = {
     usePredictableInterfaceNames = lib.mkForce true;

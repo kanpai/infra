@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, settings, ... }:
 with lib;
 {
   services.openssh = mkDefault {
@@ -21,4 +21,7 @@ with lib;
     if config.services.openssh.enable
     then map (key: key.path) config.services.openssh.hostKeys
     else [ ];
+
+  # add admin ssh keys
+  users.users.root.openssh.authorizedKeys.keys = map (admin: admin.ssh.key) settings.admins;
 }

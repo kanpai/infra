@@ -9,6 +9,13 @@
       };
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = ""; # disable darwin depedencies since all hosts are linux
+      };
+    };
     nixos-anywhere = {
       url = "github:numtide/nixos-anywhere";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +36,10 @@
       "x86_64-darwin"
       "x86_64-linux"
     ]
-      ({ pkgs, ... }: {
+      ({ system, ... }: {
+        packages = [
+          inputs.agenix.packages.${system}.default
+        ];
         development.python.enable = true;
         operations = {
           terranix.enable = true;
