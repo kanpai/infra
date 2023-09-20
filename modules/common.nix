@@ -2,6 +2,7 @@
   imports = [
     ./acme.nix
     ./impermanence.nix
+    ./containers.nix
     ./security.nix
     ./ssh.nix
     ./auto-upgrades.nix
