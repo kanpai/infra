@@ -17,7 +17,7 @@
       };
     };
     nixos-anywhere = {
-      url = "github:numtide/nixos-anywhere";
+      url = "github:mibmo/nixos-anywhere";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
