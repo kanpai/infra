@@ -7,7 +7,7 @@ from glob import glob
 parser = argparse.ArgumentParser(description='Build NixOS ISO for install on bare-metal machines')
 
 parser.add_argument('--iso', default='bootstrap-iso.nix', help='Path to Nix module that builds an ISO')
-parser.add_argument('--flash-to', default=None, help='Show output from nix-build')
+parser.add_argument('--flash-to', default=None, help='Flash image to drive')
 parser.add_argument('--progress', default=True, help='Show output from nix-build')
 
 args = parser.parse_args()
