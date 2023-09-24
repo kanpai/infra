@@ -1,9 +1,5 @@
 { lib, config, ... }:
 let
-  persistCert = cert: {
-    inherit (cert) directory;
-  };
-
   cfg = config.security.acme;
 in
 {
@@ -29,6 +25,10 @@ in
 
   persist.directories = lib.optionals cfg.acceptTerms
     (map
-      (cert: { inherit (cert) directory; })
+      (cert: {
+        inherit (cert) directory;
+        user = "acme";
+        group = "acme";
+      })
       (lib.attrsets.attrValues cfg.certs));
 }
