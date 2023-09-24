@@ -7,10 +7,10 @@ let
     "/dev/disk/by-id/ata-ST3000DM008-2DM166_Z504ZZHD" # 3tb
     "/dev/disk/by-id/ata-WDC_WD10EZEX-60M2NA0_WD-WCC3F5RHXELK" # 1tb
     "/dev/disk/by-id/ata-SAMSUNG_HD103SI_S2ADJ1CZ303130" # 1tb
-    "/dev/disk/by-id/ata-WDC_WD3200AAJS-00L7A0_WD-WMAV2C253029" # 300gb
+    #"/dev/disk/by-id/ata-WDC_WD3200AAJS-00L7A0_WD-WMAV2C253029" # 300gb
   ];
   systemPool = [
-    "/dev/disk/by-id/ata-Intenso_SSD_Sata_III_AA000000000000010250" # 250gb
+    #"/dev/disk/by-id/ata-Intenso_SSD_Sata_III_AA000000000000010250" # 250gb
   ];
 
   keyFile = "/dev/disk/by-partuuid/c199ee0c-9e34-4915-ac6e-b8a1241afcc9";
