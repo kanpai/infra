@@ -20,7 +20,7 @@ in
 
   users.users = lib.mkIf cfg.acceptTerms (
     let
-      addGroup = { user, enabled }: { ${user}.extraGroups = lib.optional enabled "acme"; };
+      addGroup = { user, enabled }: lib.attrsets.optionalAttrs enabled { ${user}.extraGroups = [ "acme" ]; };
     in
     builtins.foldl' (l: r: l // (addGroup r)) { } (with config.services; [
       { user = nginx.user; enabled = nginx.enable; }
