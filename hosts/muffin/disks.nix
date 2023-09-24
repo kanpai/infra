@@ -124,9 +124,8 @@ in
     };
 
     nodev."/" = {
-      fsType = "tmpfs";
+      fsType = "ramfs";
       mountOptions = [
-        "size=2G"
         "defaults"
         "mode=755"
       ];
