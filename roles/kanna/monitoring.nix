@@ -22,7 +22,7 @@ in
       enable = true;
       scrapeConfigs = [
         {
-          job_name = "muffin";
+          job_name = "kanna";
           static_configs = [{
             targets = [ "127.0.0.1:${toString prometheus.exporters.node.port}" ];
           }];
