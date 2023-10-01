@@ -33,7 +33,6 @@ let
         ./roles/tor/guard
         ./roles/monero
       ];
-      ip = "77.33.92.93";
       ssh.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMEZ6KQkaMArVbkhmY4GGE0yeACMBdoTYqgb7iZMoTkv";
     };
 
@@ -46,7 +45,6 @@ let
         ./roles/tor/exit
         ./roles/monero
       ];
-      ip = "51.159.211.57";
       ssh.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDr4Sn1cAQ+jQzwj9bL3VKkay9CuYFS6sftolhSbjGDp";
     };
   };

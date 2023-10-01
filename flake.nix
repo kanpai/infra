@@ -8,6 +8,7 @@
         nixos-anywhere.follows = "nixos-anywhere";
       };
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
 
     agenix = {
       url = "github:ryantm/agenix";
@@ -26,7 +27,7 @@
     };
     impermanence.url = "github:nix-community/impermanence";
   };
-  outputs = inputs@{ nixpkgs, conch, ... }:
+  outputs = inputs@{ self, nixpkgs, conch, deploy-rs, ... }:
     let
       lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; };
 
@@ -36,22 +37,34 @@
       "x86_64-darwin"
       "x86_64-linux"
     ]
-      ({ system, ... }: {
+      ({ system, pkgs, ... }: {
         packages = [
           inputs.agenix.packages.${system}.default
+          pkgs.deploy-rs
         ];
         development.python.enable = true;
         operations = {
           terranix.enable = true;
           nixos-anywhere.enable = true;
-          nixops = {
-            enable = true;
-            unstable = true;
-          };
         };
         flake = {
           nixosConfigurations = import ./hosts { inherit lib config; };
-          nixopsConfigurations = import ./networks { inherit inputs lib config; };
+          deploy = {
+            sshUser = "root";
+            sshOpts = [ "-p" "12248" ];
+
+            nodes = builtins.foldl'
+              (acc: machine: acc // {
+                ${machine.name} = {
+                  hostname = "${machine.name}.host.kanp.ai";
+                  profiles.system.path = deploy-rs.lib.${machine.system}.activate.nixos self.nixosConfigurations.${machine.name};
+                };
+              })
+              { }
+              (lib.attrsets.collect (m: m ? name) config.machines);
+          };
+
+          checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
         };
       });
 }
