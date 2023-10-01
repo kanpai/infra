@@ -19,7 +19,14 @@ let
     {
       name = "mib";
       email = "mib@kanp.ai";
-      ssh.key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGdxUQ7MjztW//KJLjg4AgtUXDP0zJvdoh4nHCAEX6wJzIc3laOpVfN9jO8pm8DcAiprmUoBB5GZmTWBmD6V9tfls2bQLFYi0X59Eh4RA2e/hlDTTNcAi4d67tSiN9Ea0qnsLrhPrtIFQu9ipGXWI3YYx7jtmw7sfHRxQDbHXHFVI3JO2XAikCBYxKoSt7mxVpbGbuLvjvT8l6mmcC9XC0NAN5aes8CuCHXTnWkO1YVCCwLTOKmF4UVMexqI3aLKHlYId7qKmGDA7DL7nP880TiKpRu75YOGYDDFlKkC1on7KyTz/0H1ObHv60Qj29g5Z8fXmNZtt0tSKtcVH1RyitrfdOarAZsUICxUqHgG7TMbOxJ4hyklPqHcRB/W5FU78fTgE+P9W1PpK2FTiTu8JexHvbMHFc1CuKv80sZRPcSA0JbWx9q/Ul4c/dQn4AfjFYI7LP53BvZFoH4mlVSaqNbC96XU0d5m8nnGdMa0AUjhHh9zToThVPkzGNFKbNfpJ6u0U/PHwHoVbhcAHRN45oqyeGXuJxdJNB2b019Yhu9dVKDt6B7D0HtN3GKuOpPk14wlEFO1quAThIjCIRtOUuJCkaZ4gOpzskDCRVAfSw2W4I1JGU0ZLfvIdkQkxUvMrQts40FEIFr1JKCAVO6ofO40r6vVxnap1+r5McHDaQmw== cardno:000F_9741A6B2";
+      keys = {
+        ssh = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGdxUQ7MjztW//KJLjg4AgtUXDP0zJvdoh4nHCAEX6wJzIc3laOpVfN9jO8pm8DcAiprmUoBB5GZmTWBmD6V9tfls2bQLFYi0X59Eh4RA2e/hlDTTNcAi4d67tSiN9Ea0qnsLrhPrtIFQu9ipGXWI3YYx7jtmw7sfHRxQDbHXHFVI3JO2XAikCBYxKoSt7mxVpbGbuLvjvT8l6mmcC9XC0NAN5aes8CuCHXTnWkO1YVCCwLTOKmF4UVMexqI3aLKHlYId7qKmGDA7DL7nP880TiKpRu75YOGYDDFlKkC1on7KyTz/0H1ObHv60Qj29g5Z8fXmNZtt0tSKtcVH1RyitrfdOarAZsUICxUqHgG7TMbOxJ4hyklPqHcRB/W5FU78fTgE+P9W1PpK2FTiTu8JexHvbMHFc1CuKv80sZRPcSA0JbWx9q/Ul4c/dQn4AfjFYI7LP53BvZFoH4mlVSaqNbC96XU0d5m8nnGdMa0AUjhHh9zToThVPkzGNFKbNfpJ6u0U/PHwHoVbhcAHRN45oqyeGXuJxdJNB2b019Yhu9dVKDt6B7D0HtN3GKuOpPk14wlEFO1quAThIjCIRtOUuJCkaZ4gOpzskDCRVAfSw2W4I1JGU0ZLfvIdkQkxUvMrQts40FEIFr1JKCAVO6ofO40r6vVxnap1+r5McHDaQmw== cardno:000F_9741A6B2"
+        ];
+        age = [
+          "age1e007kgnn4e2g0mtzvy5vdepujzfkz6v6hqh6aqa4655l62jcpgnsxv769h"
+        ];
+      };
     }
   ];
 
@@ -33,7 +40,9 @@ let
         ./roles/tor/guard
         ./roles/monero
       ];
-      ssh.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMEZ6KQkaMArVbkhmY4GGE0yeACMBdoTYqgb7iZMoTkv";
+      keys.ssh = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMEZ6KQkaMArVbkhmY4GGE0yeACMBdoTYqgb7iZMoTkv"
+      ];
     };
 
     kanna = {
@@ -45,7 +54,9 @@ let
         ./roles/tor/exit
         ./roles/monero
       ];
-      ssh.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDr4Sn1cAQ+jQzwj9bL3VKkay9CuYFS6sftolhSbjGDp";
+      keys.ssh = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPgiVv9HzuP6HlCvJeUYdSsMCp60/0HSlkYw7YA80lVX"
+      ];
     };
   };
 
