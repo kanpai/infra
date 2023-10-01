@@ -6,6 +6,9 @@ let
       modules = [ (lib.mkModule host) ];
     };
 
-  hosts = lib.recurse (c: c ? name) mkHost config.machines;
+  hosts = builtins.foldl'
+    (acc: machine: acc // { ${machine.name} = mkHost machine; })
+    { }
+    (lib.attrsets.collect (c: c ? name) config.machines);
 in
 hosts
