@@ -43,7 +43,7 @@ let
       host = ./hosts/kanna;
       roles = [
         ./roles/kanna
-        ./roles/tor/guard
+        ./roles/tor/exit
         ./roles/monero
       ];
       ip = "51.159.211.57";
