@@ -24,7 +24,9 @@ let
     )
     set;
 
-  secrets = { };
+  secrets = {
+    terraria = [ { name = "env"; } ];
+  };
 in
 foldl
   (acc: secret: acc // { ${secret.name} = mkSecret secret.secret; })
