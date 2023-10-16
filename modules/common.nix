@@ -5,6 +5,7 @@
     ./containers.nix
     ./security.nix
     ./ssh.nix
+    ./nix.nix
     ./auto-upgrades.nix
     ./nginx.nix
     ./prometheus.nix
