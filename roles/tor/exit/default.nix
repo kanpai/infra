@@ -9,7 +9,9 @@
       role = "exit";
     };
     settings.ExitPolicy = [
-      "accept *:*"
+      "reject *:25" # smtp
+      "reject *:465" # url rendesvous directory for SSM (cisco protocol)
+      "reject *:587" # secure smtp
     ];
   };
 }
