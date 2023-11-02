@@ -8,7 +8,7 @@ let
   };
   wellknownClient = {
     "m.homeserver".base_url = "https://${matrixHostname}";
-    "org.matrix.msc3575.proxy".url = "https://matrix.kanp.ai";
+    "org.matrix.msc3575.proxy".url = "https://${matrixHostname}";
   };
 
   cfg = config.services.matrix-conduit;
