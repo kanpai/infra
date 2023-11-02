@@ -41,6 +41,7 @@
         packages = [
           inputs.agenix.packages.${system}.default
           pkgs.deploy-rs
+          pkgs.nixos-generators
         ];
         development.python.enable = true;
         operations = {

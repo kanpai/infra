@@ -58,6 +58,14 @@ let
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPgiVv9HzuP6HlCvJeUYdSsMCp60/0HSlkYw7YA80lVX"
       ];
     };
+
+    mewo = {
+      name = "mewo";
+      system = "aarch64-linux";
+      host = ./hosts/mewo;
+      roles = [ ];
+      keys.ssh = [ ];
+    };
   };
 
   clusters = { };
