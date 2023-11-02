@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+
+    conduit = {
+        url = "gitlab:famedly/conduit";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs@{ self, nixpkgs, conch, deploy-rs, ... }:
     let

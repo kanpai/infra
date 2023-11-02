@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, host, inputs, pkgs, ... }:
 let
   serverName = "kanp.ai";
   matrixHostname = "matrix.${serverName}";
@@ -17,6 +17,7 @@ in
   services = {
     matrix-conduit = {
       enable = true;
+      package = inputs.conduit.packages.${host.system}.default;
       settings = {
         global = {
           server_name = serverName;
