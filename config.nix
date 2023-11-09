@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, inputs ? null }:
 let
   inherit (lib.lists) count range zipListsWith;
   inherit (lib.attrsets) mapAttrs recursiveUpdate;
@@ -63,7 +63,9 @@ let
       name = "mewo";
       system = "aarch64-linux";
       host = ./hosts/mewo;
-      roles = [ ];
+      roles = [
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      ];
       keys.ssh = [ ];
     };
   };

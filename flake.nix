@@ -26,6 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     conduit = {
         url = "gitlab:famedly/conduit";
@@ -36,7 +37,7 @@
     let
       lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; };
 
-      config = import ./config.nix { inherit lib; };
+      config = import ./config.nix { inherit lib inputs; };
     in
     conch.load [
       "x86_64-darwin"
@@ -45,6 +46,7 @@
       ({ system, pkgs, ... }: {
         packages = [
           inputs.agenix.packages.${system}.default
+          inputs.disko.packages.${system}.default
           pkgs.deploy-rs
           pkgs.nixos-generators
         ];

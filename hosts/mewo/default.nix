@@ -1,7 +1,6 @@
-{ host, inputs, ... }:
+{ host, inputs, pkgs, ... }:
 {
   imports = [
-    #inputs.nixos-hardware.nixosModules.raspberry-pi-4
     ./disks.nix
     ./networking.nix
   ];
@@ -20,8 +19,6 @@
     };
   };
 
-  services.openssh.settings.PermitRootLogin = "yes";
-
   i18n.defaultLocale = "en_DK.UTF-8";
 
   environment.persistence.main = {
@@ -37,6 +34,11 @@
       "/etc/machine-id"
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    libraspberrypi
+    raspberrypi-eeprom
+  ];
 
   system.stateVersion = "23.11";
 }

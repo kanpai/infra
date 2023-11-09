@@ -1,8 +1,7 @@
 { ... }:
 let
   disks = [
-    #"/dev/sdb"
-    "/dev/disk/by-diskseq/9"
+    { name = "main"; device = "/dev/disk/by-id/usb-SanDisk_Cruzer_Blade_4C532000060330111390-0:0"; }
   ];
 
   mkDisk = { device, ... }: {
@@ -12,16 +11,18 @@ let
       type = "gpt";
       partitions = {
         boot = {
-          size = "256M";
+          size = "512M";
           type = "EF00";
+          priority = 0;
           content = {
             type = "filesystem";
             format = "vfat";
+            extraArgs = ["-F32"];
             mountpoint = "/boot";
           };
         };
         nix = {
-          size = "8G";
+          size = "10G";
           content = {
             type = "filesystem";
             format = "btrfs";
@@ -42,7 +43,7 @@ let
 in
 {
   disko.devices = {
-    disk = builtins.foldl' (acc: disk: acc // { ${disk} = mkDisk { device = disk; }; }) { } disks;
+    disk = builtins.foldl' (acc: entry: acc // { ${entry.name} = mkDisk entry; }) { } disks;
 
     nodev."/" = {
       fsType = "ramfs";

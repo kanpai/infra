@@ -3,14 +3,11 @@ let
   networks = {
     "10-lan" = {
       matchConfig.Name = "end0";
-      networkConfig = {
-        DHCP = "yes";
-      };
-      /*
+      networkConfig.DHCP = "ipv6";
       address = [
         "192.168.0.128/24"
+        "fe80::dead:babe:cafe/64"
       ];
-      */
       dns = [
         "9.9.9.9"
         "149.112.112.112"
@@ -20,7 +17,6 @@ let
       routes = [
         { routeConfig.Gateway = "192.168.0.1"; }
       ];
-      linkConfig.RequiredForOnline = "no"; # temp
     };
   };
 in
@@ -30,11 +26,9 @@ in
     inherit networks;
   };
 
-  networking.networkmanager.enable = true;
-
   networking = {
     hostName = host.name;
     hostId = "57c4d638";
-    dhcpcd.enable = true;
+    useDHCP = false;
   };
 }
