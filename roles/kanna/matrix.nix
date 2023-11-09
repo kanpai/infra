@@ -7,7 +7,7 @@ let
     "m.server" = matrixHostname;
   };
   wellknownClient = {
-    "m.homeserver".base_url = "https://${matrixHostname}:${toString cfg.settings.global.port}";
+    "m.homeserver".base_url = "https://${matrixHostname}";
     "org.matrix.msc3575.proxy".url = "https://${matrixHostname}";
   };
 
