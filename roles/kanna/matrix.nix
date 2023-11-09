@@ -52,7 +52,6 @@ in
 
   services.nginx = {
     enable = true;
-    recommendedProxySettings = true;
 
     upstreams = {
       "backend_conduit".servers = {
@@ -79,6 +78,7 @@ in
         locations = {
           "/".return = "307 'https://${serverName}'";
           "/_matrix/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[::1]:${toString cfg.settings.global.port}$request_uri";
             proxyWebsockets = true;
             extraConfig = ''
