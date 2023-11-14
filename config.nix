@@ -65,6 +65,7 @@ let
       host = ./hosts/mewo;
       roles = [
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
+        ./roles/mewo
       ];
       keys.ssh = [ ];
     };
