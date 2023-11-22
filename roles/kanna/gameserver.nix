@@ -14,7 +14,7 @@ let
 in
 {
   services.terraria = {
-    enable = true;
+    enable = false; 
     openFirewall = true;
   };
 
@@ -34,7 +34,7 @@ in
     group = "terraria";
   };
 
-  age.secrets = lib.optionalAttrs terraria.enable {
+  age.secrets = {
     terraria-env.file = ../../secrets/terraria-env.age;
   };
 
