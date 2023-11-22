@@ -19,10 +19,4 @@
       torControlPort = builtins.head (map (m: m.port) config.services.tor.settings.ControlPort);
     };
   };
-
-  persist.directories = lib.optional config.services.tor.enable {
-    directory = "/var/lib/tor";
-    user = "tor";
-    group = "tor";
-  };
 }

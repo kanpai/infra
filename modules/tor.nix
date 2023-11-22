@@ -3,10 +3,16 @@ let
   cfg = config.services.tor;
 in
 {
-  services.tor = {
-    enable = lib.mkDefault (builtins.length (builtins.attrValues cfg.relay.onionServices) > 0);
-    settings.HiddenServiceNonAnonymousMode = true;
-  };
+  services.tor =
+    let
+      onions = builtins.attrValues cfg.relay.onionServices;
+      anyOnions = builtins.length onions > 0;
+      nonAnonymous = builtins.any (os: os.settings.HiddenServiceSingleHopMode == true) onions;
+    in
+    {
+      enable = lib.mkDefault anyOnions;
+      settings.HiddenServiceNonAnonymousMode = lib.mkDefault nonAnonymous;
+    };
 
   persist.directories = lib.optional cfg.enable {
     directory = cfg.settings.DataDirectory;
