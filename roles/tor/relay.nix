@@ -1,7 +1,7 @@
 { host, config, lib, pkgs, ... }: {
   services = {
     tor = {
-      enable = lib.mkDefault true;
+      enable = true;
       openFirewall = true;
       settings = {
         ControlPort = [{ port = 9051; }];
