@@ -24,7 +24,7 @@ in
     networkConfig = {
       Address = "10.1.1.1/24";
       DHCPServer = true;
-      IPMasquerade = "ipv4";
+      IPMasquerade = "yes";
     };
     dhcpServerConfig = {
       PoolOffset = 100;
