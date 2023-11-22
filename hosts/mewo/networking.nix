@@ -3,7 +3,7 @@ let
   networks = {
     "10-lan" = {
       matchConfig.Name = "end0";
-      networkConfig.DHCP = "ipv6";
+      networkConfig.DHCP = "no";
       address = [
         "192.168.0.128/24"
         "fe80::dead:babe:cafe/64"
