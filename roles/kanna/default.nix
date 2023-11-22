@@ -2,6 +2,7 @@
   imports = [
     ./monitoring.nix
     ./matrix.nix
+    ./website.nix
     ./gameserver.nix
   ];
 
