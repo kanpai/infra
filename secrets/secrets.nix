@@ -2,36 +2,31 @@ let
   lib = (import <nixpkgs/lib>) // (import ../lib.nix { inputs = { }; });
   config = import ../config.nix { inherit lib; };
 
-  inherit (lib.attrsets) collect;
-  inherit (lib.lists) flatten foldl foldr;
+  inherit (lib.attrsets) collect recursiveUpdate;
+  inherit (lib.lists) foldl foldr;
+  inherit (builtins) typeOf mapAttrs;
 
   getKeys = m: (m.keys.ssh or [ ]) ++ (m.keys.age or [ ]);
-  foldKeys = builtins.foldl' (acc: m: acc ++ getKeys m) [ ];
+  foldKeys = foldl (acc: m: acc ++ getKeys m) [ ];
   keys = foldKeys config.admins ++ foldKeys (collect (c: c ? name) config.machines);
 
-  mkSecret = secret: secret // {
-    publicKeys = keys;
-  };
-
-  traverse = set: names: builtins.mapAttrs
+  traverse = set: names: mapAttrs
     (name: value:
-      let
-        prefix = foldr (acc: name: "${acc}-${name}") name names;
-      in
-      if builtins.isList value
-      then map (secret: { name = "${prefix}-${secret.name}.age"; secret = secret // { inherit name; }; }) value
+      if value == { }
+      then foldr (acc: name: "${acc}-${name}") name names + ".age"
       else traverse value (names ++ [ name ])
     )
     set;
 
   secrets = {
-    terraria = [ { name = "env"; } ];
+    terraria.env = { };
   };
 in
 foldl
-  (acc: secret: acc // { ${secret.name} = mkSecret secret.secret; })
+  recursiveUpdate
 { }
-  (flatten
+  (map
+    (filename: { ${filename} = { publicKeys = keys; }; })
     (collect
-      (e: builtins.typeOf e == "list")
+      (secret: typeOf secret == "string")
       (traverse secrets [ ])))
