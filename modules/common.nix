@@ -9,6 +9,8 @@
     ./auto-upgrades.nix
     ./nginx.nix
     ./prometheus.nix
+    ./tor.nix
+    ./i2p.nix
   ];
 
   system.name = host.name;
