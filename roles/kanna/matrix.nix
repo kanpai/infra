@@ -2,14 +2,20 @@
 let
   serverName = "kanp.ai";
   matrixHostname = "matrix.${serverName}";
+  matrixOnion = "kanpai62to6zlysno5fqlpp7mvu5p4qn4cs5ia4nr2tj2mhdibanwzid.onion";
 
-  wellknownServer = {
-    "m.server" = matrixHostname;
+  mkWellknownServer = protocol: hostname: {
+    "m.server" = "${protocol}://${hostname}";
   };
-  wellknownClient = {
-    "m.homeserver".base_url = "https://${matrixHostname}";
-    "org.matrix.msc3575.proxy".url = "https://${matrixHostname}";
+  wellknownServer = mkWellknownServer "https" matrixHostname;
+  wellknownServerTor = mkWellknownServer "http" matrixOnion;
+
+  mkWellknownClient = protocol: hostname: {
+    "m.homeserver ".base_url = "${protocol}://${hostname}";
+    "org.matrix.msc3575.proxy".url = "${protocol}://${hostname}";
   };
+  wellknownClient = mkWellknownClient "https" matrixHostname;
+  wellknownClientTor = mkWellknownClient "http" matrixOnion;
 
   makeSet = maker: opts:
     lib.lists.foldl lib.attrsets.recursiveUpdate { }
@@ -30,6 +36,14 @@ in
           database_backend = "rocksdb";
         };
       };
+    };
+
+    # tor
+    tor.relay.onionServices.matrix = {
+      version = 3;
+      secretKey = config.age.secrets.matrix-tor.path;
+      map = map (port: { inherit port; target.port = 80; }) [ 80 443 8443 ];
+      settings.HiddenServiceSingleHopMode = true;
     };
 
     # bridges
@@ -119,7 +133,7 @@ in
     ];
 
   age.secrets = {
-    #matrix-tor.file = ../../secrets/matrix-tor.age;
+    matrix-tor.file = ../../secrets/matrix-tor.age;
     matrix-bridge-facebook.file = ../../secrets/matrix-bridge-facebook.age;
   };
 
@@ -152,58 +166,83 @@ in
       };
     };
 
-    virtualHosts = {
-      ${matrixHostname} = {
-        enableACME = true;
-        forceSSL = true;
+    virtualHosts =
+      let
+        mkRedirectEndpoint = { return = "307 'https://${serverName}'"; };
+        mkProxyEndpoint = {
+          recommendedProxySettings = true;
+          proxyPass = "http://[::1]:${toString cfg.settings.global.port}$request_uri";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_buffering off;
+            client_max_body_size ${toString cfg.settings.global.max_request_size};
+          '';
+        };
+        mkWellknownEndpoint = wellknown: {
+          extraConfig = ''
+            default_type application/json;
+            add_header Access-Control-Allow-Origin "*";
+          '';
+          return = "200 '${builtins.toJSON wellknown}'";
+        };
+      in
+      {
+        ${matrixHostname} = {
+          enableACME = true;
+          forceSSL = true;
 
-        listen = [
-          { addr = "0.0.0.0"; port = 443; ssl = true; }
-          { addr = "[::]"; port = 443; ssl = true; }
-          { addr = "0.0.0.0"; port = 8448; ssl = true; }
-          { addr = "[::]"; port = 8448; ssl = true; }
+          listen = [
+            { addr = "0.0.0.0"; port = 443; ssl = true; }
+            { addr = "[::]"; port = 443; ssl = true; }
+            { addr = "0.0.0.0"; port = 8448; ssl = true; }
+            { addr = "[::]"; port = 8448; ssl = true; }
+          ];
+
+          extraConfig = ''
+            merge_slashes off;
+          '';
+
+          locations = {
+            "/" = mkRedirectEndpoint;
+            "/_matrix/" = mkProxyEndpoint;
+          };
+        };
+
+        ${serverName} = {
+          enableACME = true;
+          forceSSL = true;
+
+          locations = {
+            "/".return = "444"; # no response
+            "=/.well-known/matrix/server" = mkWellknownEndpoint wellknownServer;
+            "=/.well-known/matrix/client" = mkWellknownEndpoint wellknownClient;
+          };
+        };
+      } // makeSet
+        ({ host, server, client }: {
+          ${host} = {
+            listen = [{
+              addr = "127.0.0.1";
+              port = 80;
+              ssl = false;
+            }];
+
+            extraConfig = ''
+              merge_slashes off;
+            '';
+
+            locations = {
+              "/" = mkRedirectEndpoint;
+              "/_matrix/" = mkProxyEndpoint;
+              "=/.well-known/matrix/server" = mkWellknownEndpoint server;
+              "=/.well-known/matrix/client" = mkWellknownEndpoint client;
+            };
+          };
+        })
+        [
+          { host = matrixOnion; server = wellknownServerTor; client = wellknownClientTor; }
         ];
-
-        extraConfig = ''
-          merge_slashes off;
-        '';
-
-        locations = {
-          "/".return = "307 'https://${serverName}'";
-          "/_matrix/" = {
-            recommendedProxySettings = true;
-            proxyPass = "http://[::1]:${toString cfg.settings.global.port}$request_uri";
-            proxyWebsockets = true;
-            extraConfig = ''
-              proxy_set_header Host $host;
-              proxy_buffering off;
-              client_max_body_size ${toString cfg.settings.global.max_request_size};
-            '';
-          };
-        };
-      };
-
-      ${serverName} = {
-        enableACME = true;
-        forceSSL = true;
-
-        locations = {
-          "/" = lib.mkDefault { return = "444"; }; # no response
-
-          "=/.well-known/matrix/server" = {
-            extraConfig = ''default_type application/json;'';
-            return = "200 '${builtins.toJSON wellknownServer}'";
-          };
-          "=/.well-known/matrix/client" = {
-            extraConfig = ''
-              default_type application/json;
-              add_header Access-Control-Allow-Origin "*";
-            '';
-            return = "200 '${builtins.toJSON wellknownClient}'";
-          };
-        };
-      };
-    };
   };
 
   # conduit db debugging
