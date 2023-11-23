@@ -42,6 +42,7 @@ in
       })
       [
         "mx-puppet-discord"
+        "mautrix-facebook"
       ];
 
     mx-puppet-discord = {
@@ -67,6 +68,46 @@ in
         };
       };
     };
+
+    mautrix-facebook = {
+      enable = cfg.enable;
+      configurePostgresql = false;
+      environmentFile = config.age.secrets.matrix-bridge-facebook.path;
+      settings = {
+        appservice = rec {
+          address = "http://${hostname}:${toString port}";
+          hostname = "localhost";
+          port = 29319;
+
+          database = "postgresql://mautrix-facebook@/mautrix-facebook?host=/run/mautrix-facebook";
+          bot_username = "facebook";
+        };
+
+        homeserver = {
+          address = "https://${matrixHostname}";
+          domain = serverName;
+        };
+
+        bridge = {
+          encryption = {
+            allow = true;
+            default = true;
+            verification_levels = {
+              receive = "cross-signed-tofu";
+              send = "cross-signed-tofu";
+              share = "cross-signed-tofu";
+            };
+          };
+
+          username_template = "facebook_{userid}";
+
+          permissions = {
+            "@mib:${serverName}" = "admin";
+            ${serverName} = "user";
+          };
+        };
+      };
+    };
   };
 
   users = makeSet
@@ -78,6 +119,10 @@ in
       "conduit"
       "mx-puppet-discord"
     ];
+
+  age.secrets = {
+    matrix-bridge-facebook.file = ../../secrets/matrix-bridge-facebook.age;
+  };
 
   persist.directories = lib.optional cfg.enable {
     directory = "/var/lib/private/matrix-conduit";
