@@ -11,6 +11,12 @@ let
     "org.matrix.msc3575.proxy".url = "https://${matrixHostname}";
   };
 
+  makeSet = maker: opts:
+    lib.lists.foldl
+      lib.attrsets.recursiveUpdate
+      { }
+      (map maker opts);
+
   cfg = config.services.matrix-conduit;
 in
 {
@@ -27,15 +33,51 @@ in
         };
       };
     };
-  };
 
-  users = {
-    groups.conduit = { };
-    users.conduit = {
-      isSystemUser = true;
-      group = "conduit";
+    # bridges
+    postgresql = makeSet
+      (name: {
+        ensureDatabases = [ name ];
+        ensureUsers = [{ inherit name; ensureDBOwnership = true; }];
+      })
+      [
+        "mx-puppet-discord"
+      ];
+
+    mx-puppet-discord = {
+      enable = cfg.enable;
+      serviceDependencies = [ "postgresql.service" "matrix-conduit.service" ];
+      settings = {
+        bridge = {
+          port = 8434;
+          domain = serverName;
+          homeserverUrl = "https://${matrixHostname}";
+          displayname = "Discord Bridge";
+          enableGroupSync = false;
+        };
+        database.connString = "postgres://mx-puppet-discord@/mx-puppet-discord?host=/run/postgresql";
+        presence.enabled = false;
+        provisioning.whitelist = [ "@.*:${serverName}" ];
+        selfService.whitelist = [ "@.*:${serverName}" ];
+        relay.whitelist = [ "@.*:${serverName}" ];
+        namePatterns = {
+          user = ":name";
+          userOverride = ":displayname (:name in :guild/:channel)";
+          room = ":name (:guild)";
+        };
+      };
     };
   };
+
+  users = makeSet
+    (name: {
+      groups.${name} = { };
+      users.${name} = { group = name; isSystemUser = true; };
+    })
+    [
+      "conduit"
+      "mx-puppet-discord"
+    ];
 
   persist.directories = lib.optional cfg.enable {
     directory = "/var/lib/private/matrix-conduit";

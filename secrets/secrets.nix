@@ -20,6 +20,7 @@ let
 
   secrets = {
     terraria.env = { };
+    matrix.bridge.facebook = { };
   };
 in
 foldl
