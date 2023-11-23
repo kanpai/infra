@@ -12,9 +12,7 @@ let
   };
 
   makeSet = maker: opts:
-    lib.lists.foldl
-      lib.attrsets.recursiveUpdate
-      { }
+    lib.lists.foldl lib.attrsets.recursiveUpdate { }
       (map maker opts);
 
   cfg = config.services.matrix-conduit;
@@ -35,15 +33,17 @@ in
     };
 
     # bridges
-    postgresql = makeSet
-      (name: {
-        ensureDatabases = [ name ];
-        ensureUsers = [{ inherit name; ensureDBOwnership = true; }];
-      })
-      [
-        "mx-puppet-discord"
-        "mautrix-facebook"
-      ];
+    postgresql =
+      let
+        dbs = [
+          "mx-puppet-discord"
+          "mautrix-facebook"
+        ];
+      in
+      {
+        ensureDatabases = dbs;
+        ensureUsers = map (name: { inherit name; ensureDBOwnership = true; }) dbs;
+      };
 
     mx-puppet-discord = {
       enable = cfg.enable;
@@ -62,9 +62,9 @@ in
         selfService.whitelist = [ "@.*:${serverName}" ];
         relay.whitelist = [ "@.*:${serverName}" ];
         namePatterns = {
-          user = ":name";
-          userOverride = ":displayname (:name in :guild/:channel)";
-          room = ":name (:guild)";
+          user = ":name (Discord)";
+          userOverride = ":displayname [#:name in :guild/:channel] (Discord)";
+          room = ":name [:guild]";
         };
       };
     };
@@ -78,8 +78,6 @@ in
           address = "http://${hostname}:${toString port}";
           hostname = "localhost";
           port = 29319;
-
-          database = "postgresql://mautrix-facebook@/mautrix-facebook?host=/run/mautrix-facebook";
           bot_username = "facebook";
         };
 
@@ -121,15 +119,24 @@ in
     ];
 
   age.secrets = {
+    #matrix-tor.file = ../../secrets/matrix-tor.age;
     matrix-bridge-facebook.file = ../../secrets/matrix-bridge-facebook.age;
   };
 
-  persist.directories = lib.optional cfg.enable {
-    directory = "/var/lib/private/matrix-conduit";
-    user = "conduit";
-    group = "conduit";
-    mode = "0770";
-  };
+  persist.directories =
+    lib.optional cfg.enable
+      {
+        directory = "/var/lib/private/matrix-conduit";
+        user = "conduit";
+        group = "conduit";
+        mode = "0770";
+      } ++
+    lib.optional cfg.enable {
+      directory = "/var/lib/private/mx-puppet-discord";
+      user = "mx-puppet-discord";
+      group = "mx-puppet-discord";
+      mode = "0755";
+    };
 
   networking.firewall = {
     allowedTCPPorts = [ 80 443 8448 ];
