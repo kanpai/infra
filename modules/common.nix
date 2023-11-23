@@ -11,6 +11,7 @@
     ./prometheus.nix
     ./tor.nix
     ./i2p.nix
+    ./postgresql.nix
   ];
 
   system.name = host.name;
