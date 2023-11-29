@@ -14,7 +14,7 @@ let
   wellknownServerI2P = mkWellknownServer "http" matrixEepB32;
 
   mkWellknownClient = protocol: hostname: {
-    "m.homeserver ".base_url = "${protocol}://${hostname}";
+    "m.homeserver".base_url = "${protocol}://${hostname}";
     "org.matrix.msc3575.proxy".url = "${protocol}://${hostname}";
   };
   wellknownClient = mkWellknownClient "https" matrixHostname;
