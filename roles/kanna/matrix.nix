@@ -3,12 +3,15 @@ let
   serverName = "kanp.ai";
   matrixHostname = "matrix.${serverName}";
   matrixOnion = "kanpai62to6zlysno5fqlpp7mvu5p4qn4cs5ia4nr2tj2mhdibanwzid.onion";
+  matrixEep = "matrix.kanpai.i2p";
+  matrixEepB32 = "kanpaiehzmk6l3igtj3mznvyt5stg6r6m4elklhaqlqfbxgmsida.b32.i2p";
 
   mkWellknownServer = protocol: hostname: {
     "m.server" = "${protocol}://${hostname}";
   };
   wellknownServer = mkWellknownServer "https" matrixHostname;
   wellknownServerTor = mkWellknownServer "http" matrixOnion;
+  wellknownServerI2P = mkWellknownServer "http" matrixEepB32;
 
   mkWellknownClient = protocol: hostname: {
     "m.homeserver ".base_url = "${protocol}://${hostname}";
@@ -16,6 +19,7 @@ let
   };
   wellknownClient = mkWellknownClient "https" matrixHostname;
   wellknownClientTor = mkWellknownClient "http" matrixOnion;
+  wellknownClientI2P = mkWellknownClient "http" matrixEepB32;
 
   makeSet = maker: opts:
     lib.lists.foldl lib.attrsets.recursiveUpdate { }
@@ -44,6 +48,13 @@ in
       secretKey = config.age.secrets.matrix-tor.path;
       map = map (port: { inherit port; target.port = 80; }) [ 80 443 8443 ];
       settings.HiddenServiceSingleHopMode = true;
+    };
+
+    i2pd.inTunnels.matrix-client = {
+      enable = true;
+      destination = matrixEepB32;
+      port = 80;
+      keys = "matrix-keys.dat";
     };
 
     # bridges
@@ -220,8 +231,10 @@ in
           };
         };
       } // makeSet
-        ({ host, server, client }: {
-          ${host} = {
+        ({ name, serverName, server, client }: {
+          ${name} = {
+            inherit serverName;
+
             listen = [{
               addr = "127.0.0.1";
               port = 80;
@@ -241,7 +254,8 @@ in
           };
         })
         [
-          { host = matrixOnion; server = wellknownServerTor; client = wellknownClientTor; }
+          { name = "matrix-tor"; serverName = matrixOnion; server = wellknownServerTor; client = wellknownClientTor; }
+          { name = "matrix-i2p"; serverName = "~^(${matrixEep}|${matrixEepB32})$"; server = wellknownServerI2P; client = wellknownClientI2P; }
         ];
   };
 

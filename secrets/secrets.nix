@@ -19,6 +19,10 @@ let
     set;
 
   secrets = {
+    i2p = {
+      base = { };
+      matrix = { };
+    };
     terraria.env = { };
     matrix = {
       tor = { };
