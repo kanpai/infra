@@ -33,7 +33,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs@{ self, nixpkgs, conch, deploy-rs, ... }:
+  outputs = inputs@{ self, nixpkgs, conch, ... }:
     let
       lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; };
 
@@ -63,16 +63,31 @@
 
             nodes = builtins.foldl'
               (acc: machine: acc // {
-                ${machine.name} = {
-                  hostname = "${machine.name}.host.kanp.ai";
-                  profiles.system.path = deploy-rs.lib.${machine.system}.activate.nixos self.nixosConfigurations.${machine.name};
-                };
+                ${machine.name} =
+                  let
+                    deployPkgs = import nixpkgs {
+                      system = machine.system;
+                      overlays = [
+                        inputs.deploy-rs.overlay
+                        (self: super: {
+                          deploy-rs = {
+                            inherit (pkgs) deploy-rs;
+                            lib = super.deploy-rs.lib;
+                          };
+                        })
+                      ];
+                    };
+                  in
+                  {
+                    hostname = "${machine.name}.host.kanp.ai";
+                    profiles.system.path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${machine.name};
+                  };
               })
               { }
               (lib.attrsets.collect (m: m ? name) config.machines);
           };
 
-          checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+          checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
         };
       });
 }
