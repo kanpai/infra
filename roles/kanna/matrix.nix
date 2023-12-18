@@ -6,12 +6,12 @@ let
   matrixEep = "matrix.kanpai.i2p";
   matrixEepB32 = "kanpaiehzmk6l3igtj3mznvyt5stg6r6m4elklhaqlqfbxgmsida.b32.i2p";
 
-  mkWellknownServer = protocol: hostname: {
-    "m.server" = "${protocol}://${hostname}";
+  mkWellknownServer = hostname: port: {
+    "m.server" = "${hostname}:${toString port}";
   };
-  wellknownServer = mkWellknownServer "https" matrixHostname;
-  wellknownServerTor = mkWellknownServer "http" matrixOnion;
-  wellknownServerI2P = mkWellknownServer "http" matrixEepB32;
+  wellknownServer = mkWellknownServer matrixHostname 443;
+  wellknownServerTor = mkWellknownServer matrixOnion 80;
+  wellknownServerI2P = mkWellknownServer matrixEepB32 80;
 
   mkWellknownClient = protocol: hostname: {
     "m.homeserver".base_url = "${protocol}://${hostname}";
