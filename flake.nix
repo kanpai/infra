@@ -27,6 +27,11 @@
     };
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    conduit = {
+      url = "gitlab:famedly/conduit/next";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs@{ self, nixpkgs, conch, deploy-rs, ... }:
     let
