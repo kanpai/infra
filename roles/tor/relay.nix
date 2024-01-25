@@ -19,4 +19,6 @@
       torControlPort = builtins.head (map (m: m.port) config.services.tor.settings.ControlPort);
     };
   };
+
+  environment.systemPackages = [ pkgs.nyx ];
 }
