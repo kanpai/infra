@@ -1,6 +1,7 @@
 { host, ... }: {
   imports = [
     ./acme.nix
+    ./age.nix
     ./impermanence.nix
     ./containers.nix
     ./security.nix
