@@ -28,6 +28,7 @@ let
       tor = { };
       bridge.facebook = { };
     };
+    hentaiathome.key = { };
   };
 in
 foldl
