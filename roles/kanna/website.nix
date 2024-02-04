@@ -1,24 +1,33 @@
-{ ... }:
+{ pkgs, ... }:
 let
   domain = "mib.dev";
-  port = 3259;
+
+  src = pkgs.fetchFromGitHub {
+    owner = "mibmo";
+    repo = "mib.dev";
+    rev = "19ede01238458cf60eb117927b497ea315aab08a";
+    hash = "sha256-IKjl5VMz5BF0w7SmGdDZ4HyYxuqD8Kw7vdhpgRvtx5E";
+  };
 in
 {
-  virtualisation.oci-containers.containers.${domain} = {
-    image = "ghcr.io/mibmo/mib.dev:19ede01238458cf60eb117927b497ea315aab08a";
-    ports = [ "127.0.0.1:${toString port}:3000" ];
-  };
-
-  security.acme.certs.${domain}.extraDomainNames = [ "www.${domain}" ];
-
   services.nginx.virtualHosts = {
     "${domain}" = {
       useACMEHost = domain;
       forceSSL = true;
-      locations."/" = {
-        recommendedProxySettings = true;
-        proxyPass = "http://127.0.0.1:${toString port}$request_uri";
-      };
+      root = "${src}/www/";
+      locations =
+        let
+          serveFile = file: contentType: {
+            extraConfig = "add_header content-type '${contentType}';";
+            tryFiles = "/${file} =500";
+          };
+        in
+        {
+          "/" = serveFile "main.html" "text/html";
+          "=/style" = serveFile "style.css" "text/css";
+          "=/gpg.txt" = serveFile "gpg.asc" "text/plain";
+          "=/gpg.asc" = serveFile "gpg.asc" "application/octet-stream";
+        };
     };
     "www.${domain}" = {
       useACMEHost = domain;
@@ -26,4 +35,6 @@ in
       locations."/".return = "308 https://${domain}$request_uri";
     };
   };
+
+  security.acme.certs.${domain}.extraDomainNames = [ "www.${domain}" ];
 }
