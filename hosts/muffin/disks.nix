@@ -57,6 +57,7 @@ in
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "noexec" ];
               };
             }
             {
@@ -104,6 +105,7 @@ in
               type = "filesystem";
               format = "ext4";
               mountpoint = "/persist";
+              mountOptions = [ "noexec" ];
             };
           };
         };
@@ -128,6 +130,7 @@ in
       mountOptions = [
         "defaults"
         "mode=755"
+        "noexec"
       ];
     };
   };

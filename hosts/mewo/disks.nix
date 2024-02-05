@@ -19,6 +19,7 @@ let
             format = "vfat";
             extraArgs = ["-F32"];
             mountpoint = "/boot";
+            mountOptions = [ "noexec" ];
           };
         };
         nix = {
@@ -35,6 +36,7 @@ let
             type = "filesystem";
             format = "ext4";
             mountpoint = "/persist";
+            mountOptions = [ "noexec" ];
           };
         };
       };
@@ -50,6 +52,7 @@ in
       mountOptions = [
         "defaults"
         "mode=755"
+        "noexec"
       ];
     };
   };

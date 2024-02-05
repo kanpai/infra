@@ -43,6 +43,7 @@ in
       mountOptions = [
         "defaults"
         "mode=755"
+        "noexec"
       ];
     };
 
@@ -55,6 +56,7 @@ in
           type = "filesystem";
           format = "vfat";
           mountpoint = "/boot";
+          mountOptions = [ "noexec" ];
         };
       };
     };
@@ -79,6 +81,7 @@ in
             type = "zfs_fs";
             options.mountpoint = "legacy";
             mountpoint = "/persist";
+            mountOptions = [ "noexec" ];
           };
         };
       };
