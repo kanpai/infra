@@ -13,7 +13,7 @@ in
     settings.PermitRootLogin = "yes";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [] config.admins;
+  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] config.admins;
 
   networking = {
     usePredictableInterfaceNames = lib.mkForce true;
