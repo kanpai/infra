@@ -16,6 +16,8 @@
       grub = {
         enable = true;
         efiSupport = true;
+        copyKernels = false;
+        configurationLimit = 5;
       };
     };
     swraid.enable = true;
