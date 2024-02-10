@@ -67,7 +67,9 @@ let
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
         ./roles/mewo
       ];
-      keys.ssh = [ ];
+      keys.ssh = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgfNExprRe8t2M6/2nA1eXukec3dY4lRJc7fiEbBcj5"
+      ];
     };
   };
 
