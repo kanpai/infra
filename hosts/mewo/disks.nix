@@ -20,6 +20,7 @@ let
             extraArgs = [ "-F32" ];
             mountpoint = "/boot";
             mountOptions = [ "noexec" ];
+            postMountHook = ''sh -c "cp /boot/* /mnt/boot/"'';
           };
         };
         nix = {
