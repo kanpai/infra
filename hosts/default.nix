@@ -9,6 +9,6 @@ let
   hosts = builtins.foldl'
     (acc: machine: acc // { ${machine.name} = mkHost machine; })
     { }
-    (lib.attrsets.collect (c: c ? name) config.machines);
+    (lib.attrsets.collect (c: c ? name) (config.machines // config.installers));
 in
 hosts

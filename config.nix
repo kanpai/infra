@@ -13,7 +13,17 @@ let
         (machine: { ${machine.name} = machine; })
         (zipListsWith maker (rangeTo (length configs)) configs));
 
-  mkMachine = machine: machine;
+  mkInstaller = installer: recursiveUpdate installer {
+    name = "installer-${installer.name}";
+    roles = installer.roles or [ ] ++ [
+      ./installers/base
+    ];
+  };
+  mkMachine = machine: recursiveUpdate machine {
+    roles = machine.roles or [ ] ++ [
+      ./modules/common.nix
+    ];
+  };
 
   admins = [
     {
@@ -30,8 +40,15 @@ let
     }
   ];
 
-  machines = {
-    muffin = {
+  installers = mapAttrs (_: mkInstaller) {
+    raspberrypi = {
+      name = "raspberrypi";
+      system = "aarch64-linux";
+      host = ./installers/raspberrypi;
+    };
+  };
+
+  machines = mapAttrs (_: mkMachine) {
       name = "muffin";
       system = "x86_64-linux";
       host = ./hosts/muffin;
@@ -76,5 +93,5 @@ let
   clusters = { };
 in
 {
-  inherit admins machines clusters;
+  inherit admins installers machines clusters;
 }

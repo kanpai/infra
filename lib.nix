@@ -15,7 +15,6 @@ let
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
         agenix.nixosModules.age
-        ./modules/common.nix
         module.host
       ] ++ module.roles;
 
