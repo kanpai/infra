@@ -8,9 +8,9 @@ from glob import glob
 
 parser = argparse.ArgumentParser(description='Build NixOS images for installing on bare-metal machines')
 
-parser.add_argument('--installer', type=str, default='raspberrypi', help='Installer name. See config.nix/installers')
+parser.add_argument('installer', type=str, help='Installer name. See config.nix/installers')
 parser.add_argument('--flash-to', type=pathlib.Path, default=None, help='Flash image to drive')
-parser.add_argument('--progress', action='store_true', help='Show output from nix-build')
+parser.add_argument('--quiet', action='store_true', help='Hide output')
 parser.add_argument('--no-nom', action='store_true', help='Don\'t show extended output from nom')
 
 args = parser.parse_args()
@@ -27,6 +27,11 @@ infoCmd = subprocess.run([
 ],
     capture_output=True,
 )
+if infoCmd.returncode != 0:
+    print("Failed to fetch installer info")
+    print("Error from nix:")
+    print(infoCmd.stderr.decode())
+    exit(1)
 
 info = json.loads(infoCmd.stdout)
 buildAttr = {
@@ -36,12 +41,12 @@ buildAttr = {
 
 nomAvailable = subprocess.getstatusoutput('command -v nom')[0] == 0
 buildCmd = subprocess.run([
-    'nom' if args.progress and nomAvailable and not args.no_nom else 'nix',
+    'nom' if not args.quiet and nomAvailable and not args.no_nom else 'nix',
     'build',
     f'.#nixosConfigurations.installer-{args.installer}.config.system.build.{buildAttr}',
 ],
-    stdout=None if args.progress else subprocess.DEVNULL,
-    stderr=None if args.progress else subprocess.DEVNULL,
+    stdout=subprocess.DEVNULL if args.quiet else None,
+    stderr=subprocess.DEVNULL if args.quiet else None,
 )
 
 if args.flash_to != None:
@@ -55,11 +60,11 @@ if args.flash_to != None:
         buildCmd = subprocess.run([
             'sudo',
             'dd',
-            'status=progress' if args.progress else '',
+            '' if args.quiet else 'status=progress',
             f'if={image}',
             f'of={device}'
         ],
-            stdout = None if args.progress else subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL if args.quiet else None,
         )
 
         if buildCmd.returncode == 0:
