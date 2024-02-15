@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 let
   ap-interface = "wlan0";
 in
@@ -10,11 +10,13 @@ in
       channel = 136;
       countryCode = "DK";
       networks.${ap-interface} = {
-        ssid = "headspace";
+        ssid = "🌟 head 🌌 space 🌙";
         authentication = {
           mode = "wpa2-sha256";
           wpaPassword = "rockpaperdepression";
         };
+        # WPA-PSK-SHA256 unsupported
+        settings.wpa_key_mgmt = lib.mkForce "WPA-PSK";
       };
     };
   };
@@ -24,7 +26,7 @@ in
     networkConfig = {
       Address = "10.1.1.1/24";
       DHCPServer = true;
-      IPMasquerade = "yes";
+      IPMasquerade = "both";
     };
     dhcpServerConfig = {
       PoolOffset = 100;
