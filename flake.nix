@@ -1,6 +1,12 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.follows = "nixpkgs-unstable";
+    nixpkgs-stable.follows = "nixpkgs-23_11";
+
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nixpkgs-23_11.url = "nixpkgs/nixos-23.11";
+    nixpkgs-23_05.url = "nixpkgs/nixos-23.05";
+
     conch = {
       url = "github:mibmo/conch";
       inputs = {
