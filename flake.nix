@@ -88,7 +88,7 @@
                     };
                   in
                   {
-                    hostname = "${machine.name}.host.kanp.ai";
+                    hostname = "${machine.name}.kanpai";
                     profiles.system.path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations.${machine.name};
                   };
               })
