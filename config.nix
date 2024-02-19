@@ -85,7 +85,7 @@ let
         ./roles/mewo
       ];
       keys.ssh = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgfNExprRe8t2M6/2nA1eXukec3dY4lRJc7fiEbBcj5"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInKklx3vwITNm1vo6LpgRBWQNGRaIvkg5pf64ca+2p2"
       ];
     };
   };
