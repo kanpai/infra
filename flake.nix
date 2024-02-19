@@ -75,7 +75,15 @@
                       system = machine.system;
                       overlays = [
                         inputs.deploy-rs.overlay
-                        (self: super: { deploy-rs = { inherit (super.deploy-rs) deploy-rs lib; }; })
+                        (self: super: {
+                          deploy-rs = {
+                            inherit (super.deploy-rs) lib;
+                            deploy-rs =
+                              if machine.system == pkgs.system
+                              then pkgs.deploy-rs
+                              else super.deploy-rs.deploy-rs;
+                          };
+                        })
                       ];
                     };
                   in
