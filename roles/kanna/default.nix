@@ -4,6 +4,7 @@
     ./matrix.nix
     ./website.nix
     ./hath.nix
+    ./vpn.nix
   ];
 
   system.autoUpgrade.enable = false;

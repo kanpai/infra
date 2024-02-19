@@ -28,6 +28,7 @@ let
       tor = { };
       bridge.facebook = { };
     };
+    vpn.preauth = { };
     hentaiathome.key = { };
   };
 in

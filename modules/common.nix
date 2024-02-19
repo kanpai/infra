@@ -14,6 +14,7 @@
     ./tor.nix
     ./i2p.nix
     ./postgresql.nix
+    ./vpn.nix
   ];
 
   system.name = host.name;
