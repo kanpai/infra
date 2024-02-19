@@ -23,6 +23,7 @@ in
       ExecStart = with settings.client;
         pkgs.writeShellScript "hentaiathome.sh"
           "${package}/bin/HentaiAtHome <(echo ${id}; cat ${keyFile})";
+      Restart = "on-failure";
       RestartSec = 10;
       StartLimitBurst = 5;
       UMask = "077";
