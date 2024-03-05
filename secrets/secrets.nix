@@ -30,6 +30,7 @@ let
     };
     vpn.preauth = { };
     hentaiathome.key = { };
+    nextcloud.admin.password = { };
   };
 in
 foldl
