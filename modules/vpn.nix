@@ -3,7 +3,10 @@
     enable = true;
     openFirewall = true;
     authKeyFile = config.age.secrets.vpn-preauth.path;
-    extraUpFlags = [ "--login-server=https://headscale.kanp.ai" ];
+    extraUpFlags = [
+      "--login-server=https://headscale.kanp.ai"
+      "--accept-dns=false"
+    ];
   };
 
   # should upstream a change that makes tailscale run as proper user with right permissions.
