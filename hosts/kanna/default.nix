@@ -23,6 +23,8 @@
     swraid.enable = true;
   };
 
+  powerManagement.cpuFreqGovernor = "performance";
+
   environment.persistence.main = {
     enable = true;
     persistentStoragePath = "/persist";
