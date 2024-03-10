@@ -8,6 +8,7 @@ let
   apps = {
     inherit (cfg.package.packages.apps)
       bookmarks
+      calendar
       contacts
       cookbook
       cospend
