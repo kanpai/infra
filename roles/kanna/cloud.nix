@@ -1,9 +1,20 @@
-{ pkgs, lib, config, settings, ... }:
+{ pkgs, pkgs-23_05, lib, config, settings, ... }:
 let
   serverName = "cloud.kanp.ai";
 
   adminName = "mib";
   adminPasswordFile = config.age.secrets.nextcloud-admin-password.path;
+
+  apps = {
+    inherit (cfg.package.packages.apps)
+      bookmarks
+      contacts
+      cookbook
+      cospend
+      gpoddersync
+      previewgenerator
+      ;
+  };
 
   cfg = config.services.nextcloud;
 in
@@ -18,6 +29,8 @@ lib.mkIf true {
 
       appstoreEnable = false;
       autoUpdateApps.enable = true;
+
+      extraApps = apps;
 
       caching = {
         apcu = true; # local memcache
