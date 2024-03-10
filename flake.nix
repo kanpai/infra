@@ -34,9 +34,7 @@
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    conduit = {
-      url = "gitlab:famedly/conduit/next";
-      inputs.nixpkgs.follows = "nixpkgs";
+    conduit.url = "gitlab:famedly/conduit/next";
     };
   };
   outputs = inputs@{ self, nixpkgs, conch, ... }:
