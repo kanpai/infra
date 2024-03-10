@@ -13,13 +13,24 @@ let
         (machine: { ${machine.name} = machine; })
         (zipListsWith maker (rangeTo (length configs)) configs));
 
-  mkInstaller = installer: recursiveUpdate installer {
-    name = "installer-${installer.name}";
-    roles = installer.roles or [ ] ++ [
-      ./installers/base
-    ];
-  };
-  mkMachine = machine: recursiveUpdate machine {
+  mkInstaller = key: spec:
+    let
+      installer =
+        if spec != { }
+        then spec
+        else {
+          name = key;
+          system = key;
+          host = ./installers/${key};
+        };
+    in
+    recursiveUpdate installer {
+      name = "installer-${installer.name}";
+      roles = installer.roles or [ ] ++ [
+        ./installers/base
+      ];
+    };
+  mkMachine = key: machine: recursiveUpdate machine {
     roles = machine.roles or [ ] ++ [
       ./modules/common.nix
     ];
@@ -40,7 +51,7 @@ let
     }
   ];
 
-  installers = mapAttrs (_: mkInstaller) {
+  installers = mapAttrs mkInstaller {
     raspberrypi = {
       name = "raspberrypi";
       system = "aarch64-linux";
@@ -48,7 +59,7 @@ let
     };
   };
 
-  machines = mapAttrs (_: mkMachine) {
+  machines = mapAttrs mkMachine {
       name = "muffin";
       system = "x86_64-linux";
       host = ./hosts/muffin;
