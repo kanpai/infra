@@ -29,7 +29,6 @@
       "543-544" # Kerberos
       "554" # RTSP
       "563" # NNTP over SSL
-      "587" # SUBMISSION (authenticated clients [MUA's like Thunderbird] send mail over STARTTLS SMTP here)
       "636" # LDAP over SSL
       "706" # SILC
       "749" # kerberos 
