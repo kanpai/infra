@@ -35,7 +35,6 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     conduit.url = "gitlab:famedly/conduit/next";
-    };
   };
   outputs = inputs@{ self, nixpkgs, conch, ... }:
     let
