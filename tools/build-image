@@ -50,7 +50,7 @@ buildCmd = subprocess.run([
 )
 
 if args.flash_to != None:
-    images = glob('./result/iso/nixos-*.iso')
+    images = glob('./result/iso/nixos*.iso')
     if len(images) < 1:
         print('Could not determine ISO path; not flashing!')
     else:
