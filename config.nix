@@ -52,6 +52,7 @@ let
   ];
 
   installers = mapAttrs mkInstaller {
+    x86_64-linux = { };
     raspberrypi = {
       name = "raspberrypi";
       system = "aarch64-linux";
