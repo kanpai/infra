@@ -5,7 +5,7 @@ let
 
   cfg = config.services.maddy;
 in
-lib.mkIf true {
+{
   services = {
     maddy = {
       enable = true;
@@ -150,10 +150,7 @@ lib.mkIf true {
 
     postgresql = {
       ensureDatabases = [ "maddy" ];
-      ensureUsers = [
-        { name = "root"; ensureClauses.superuser = true; }
-        { name = "maddy"; ensureDBOwnership = true; }
-      ];
+      ensureUsers = [{ name = "maddy"; ensureDBOwnership = true; }];
     };
   };
 
