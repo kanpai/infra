@@ -58,6 +58,15 @@
           terranix.enable = true;
           nixos-anywhere.enable = true;
         };
+        shellHook = ''
+          function _installers() {
+            installers="$(basename --multiple ${./installers}/* | awk '$1 !~ "base" { print }')"
+            COMPREPLY=($(compgen -W "$installers" -- ''${COMP_WORDS[$COMP_CWORD]}))
+            return 0
+          }
+
+          complete -F _installers build-image 
+        '';
         flake = {
           nixosConfigurations = import ./hosts { inherit lib config; };
           deploy = {
