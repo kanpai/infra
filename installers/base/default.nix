@@ -1,4 +1,4 @@
-{ lib, config, settings, ... }:
+{ lib, inputs, config, settings, ... }:
 {
   networking = {
     usePredictableInterfaceNames = lib.mkForce true;
@@ -14,4 +14,9 @@
   users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] settings.admins;
 
   system.stateVersion = config.system.nixos.release;
+
+  nix = {
+    extraOptions = "experimental-features = nix-command flakes";
+    registry.nixpkgs.flake = inputs.nixpkgs;
+  };
 }
