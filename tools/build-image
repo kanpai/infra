@@ -88,4 +88,4 @@ if buildCmd.returncode == 0:
     sys.exit(0)
 else:
     print('Failed to build. Exiting')
-    sys.exit(0)
+    sys.exit(1)
