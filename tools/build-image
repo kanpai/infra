@@ -72,7 +72,14 @@ if buildCmd.returncode == 0:
 
             if buildCmd.returncode == 0:
                 print(f'Successfully flashed {image}')
-                print(f'You may now remove {device}')
+
+                print('Syncing data...')
+                syncCmd = subprocess.run(['sudo', 'sync', device])
+                if syncCmd.returncode == 0:
+                    print(f'You may now remove {device}')
+                else:
+                    print('Syncing might have failed. Be cautious!')
+                    sys.exit(1)
             else:
                 print(f'Flash failed with dd error {buildCmd.returncode}')
                 sys.exit(1)
