@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import json
 import pathlib
 import argparse
@@ -49,28 +50,35 @@ buildCmd = subprocess.run([
     stderr=subprocess.DEVNULL if args.quiet else None,
 )
 
-if args.flash_to != None:
-    images = glob('./result/iso/nixos*.iso')
-    if len(images) < 1:
-        print('Could not determine ISO path; not flashing!')
-    else:
-        image = images[0]
-        device = args.flash_to
-        print(f'Flashing image {image} to {device}')
-        buildCmd = subprocess.run([
-            'sudo',
-            'dd',
-            '' if args.quiet else 'status=progress',
-            f'if={image}',
-            f'of={device}'
-        ],
-            stdout=subprocess.DEVNULL if args.quiet else None,
-        )
-
-        if buildCmd.returncode == 0:
-            print(f'Successfully flashed {image}')
-            print(f'You may now remove {device}')
+if buildCmd.returncode == 0:
+    if args.flash_to != None:
+        images = glob('./result/iso/nixos*.iso')
+        if len(images) < 1:
+            print('Could not determine ISO path; not flashing!')
+            sys.exit(1)
         else:
-            print(f'Flash failed with dd error {buildCmd.returncode}')
+            image = images[0]
+            device = args.flash_to
+            print(f'Flashing image {image} to {device}')
+            buildCmd = subprocess.run([
+                'sudo',
+                'dd',
+                '' if args.quiet else 'status=progress',
+                f'if={image}',
+                f'of={device}'
+            ],
+                stdout=subprocess.DEVNULL if args.quiet else None,
+            )
+
+            if buildCmd.returncode == 0:
+                print(f'Successfully flashed {image}')
+                print(f'You may now remove {device}')
+            else:
+                print(f'Flash failed with dd error {buildCmd.returncode}')
+                sys.exit(1)
+    else:
+        print('Done')
+    sys.exit(0)
 else:
-    print('Done')
+    print('Failed to build. Exiting')
+    sys.exit(0)
