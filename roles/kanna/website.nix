@@ -5,8 +5,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "mibmo";
     repo = "mib.dev";
-    rev = "19ede01238458cf60eb117927b497ea315aab08a";
-    hash = "sha256-IKjl5VMz5BF0w7SmGdDZ4HyYxuqD8Kw7vdhpgRvtx5E";
+    rev = "73e1be763b7ad62d76368ecff8ea1e97760bc7c2";
+    hash = "sha256-toPUbbp34rWbWDmqJ3XGpUqF8qgj8BST7M/lmAPCb2U=";
   };
 in
 {
