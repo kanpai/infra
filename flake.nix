@@ -15,22 +15,9 @@
       };
     };
     deploy-rs.url = "github:serokell/deploy-rs";
-
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        darwin.follows = ""; # disable darwin depedencies since all hosts are linux
-      };
-    };
-    nixos-anywhere = {
-      url = "github:mibmo/nixos-anywhere";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    agenix.url = "github:ryantm/agenix";
+    nixos-anywhere.url = "github:mibmo/nixos-anywhere";
+    disko.url = "github:nix-community/disko";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
