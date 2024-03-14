@@ -61,16 +61,15 @@ let
   };
 
   machines = mapAttrs mkMachine {
+    muffin = {
       name = "muffin";
       system = "x86_64-linux";
       host = ./hosts/muffin;
       roles = [
         ./roles/muffin
-        ./roles/tor/guard
-        ./roles/monero
       ];
       keys.ssh = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMEZ6KQkaMArVbkhmY4GGE0yeACMBdoTYqgb7iZMoTkv"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/Xm/uSh6Ppy2lBtTr4ucw8mVBYWrqcDYLXmXN1XMTP"
       ];
     };
 

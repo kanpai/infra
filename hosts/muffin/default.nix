@@ -11,21 +11,24 @@
   hardware.enableRedistributableFirmware = true;
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_zen;
+    kernelModules = [ "kvm-amd" ];
     initrd = {
       availableKernelModules = [ "xhci_pci" "xhci_hcd" "ahci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ "dm-snapshot" ];
     };
-    kernelPackages = pkgs.linuxPackages_zen;
-    kernelModules = [ "kvm-amd" ];
-    extraModulePackages = [ ];
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
-        devices = [ "/dev/nvme0n1" ];
-        efiSupport = true;
+        enable = true;
+        efiSupport = false;
+        configurationLimit = 5;
       };
     };
+    swraid.enable = true;
   };
+
+  powerManagement.cpuFreqGovernor = "performance";
 
   environment.persistence.main = {
     enable = true;

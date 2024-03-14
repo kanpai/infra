@@ -3,7 +3,7 @@
 
   # enable HIP for GPU acceleration
   systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.hip}"
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
 
   hardware = {
@@ -12,8 +12,7 @@
       driSupport32Bit = true;
       extraPackages = with pkgs; [
         amdvlk
-        rocm-opencl-icd
-        rocm-opencl-runtime
+        rocmPackages.clr.icd
       ];
       extraPackages32 = with pkgs; [
         driversi686Linux.amdvlk
