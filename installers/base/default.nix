@@ -1,4 +1,4 @@
-{ lib, inputs, config, settings, ... }:
+{ lib, pkgs, inputs, config, settings, ... }:
 {
   networking = {
     usePredictableInterfaceNames = lib.mkForce true;
@@ -19,4 +19,6 @@
     extraOptions = "experimental-features = nix-command flakes";
     registry.nixpkgs.flake = inputs.nixpkgs;
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
