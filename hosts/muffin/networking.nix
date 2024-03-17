@@ -32,6 +32,7 @@ in
 
   networking = {
     hostName = host.name;
+    useNetworkd = true;
     dhcpcd.enable = false;
   };
 }
