@@ -4,7 +4,7 @@ let
     "10-lan" = {
       matchConfig.Name = "enp6s0";
       networkConfig = {
-        DHCP = "no";
+        DHCP = "yes";
       };
       address = [
         "192.168.1.100/24"
