@@ -21,6 +21,21 @@ let
   wellknownClientTor = mkWellknownClient "http" matrixOnion;
   wellknownClientI2P = mkWellknownClient "http" matrixEepB32;
 
+  wellknownSupport = {
+    contacts = [
+      {
+        matrix_id = "@mib:kanp.ai";
+        email_address = "mib@kanp.ai";
+        role = "m.role.admin";
+      }
+      {
+        matrix_id = "@mib:kanp.ai";
+        email_address = "mib@mib.dev";
+        role = "m.role.admin";
+      }
+    ];
+  };
+
   makeSet = maker: opts:
     lib.lists.foldl lib.attrsets.recursiveUpdate { }
       (map maker opts);
@@ -229,6 +244,7 @@ in
             "/".return = "444"; # no response
             "=/.well-known/matrix/server" = mkWellknownEndpoint wellknownServer;
             "=/.well-known/matrix/client" = mkWellknownEndpoint wellknownClient;
+            "=/.well-known/matrix/support" = mkWellknownEndpoint wellknownSupport;
           };
         };
       } // makeSet
@@ -251,6 +267,7 @@ in
               "/_matrix/" = mkProxyEndpoint;
               "=/.well-known/matrix/server" = mkWellknownEndpoint server;
               "=/.well-known/matrix/client" = mkWellknownEndpoint client;
+              "=/.well-known/matrix/support" = mkWellknownEndpoint wellknownSupport;
             };
           };
         })
