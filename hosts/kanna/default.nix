@@ -17,7 +17,7 @@
         enable = true;
         efiSupport = true;
         copyKernels = false;
-        configurationLimit = 5;
+        configurationLimit = 3;
       };
     };
     swraid.enable = true;
