@@ -22,5 +22,5 @@
     registry.nixpkgs.flake = inputs.nixpkgs;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 }
