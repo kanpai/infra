@@ -1,6 +1,8 @@
 { lib, pkgs, inputs, config, settings, ... }:
 {
   networking = {
+    networkmanager.enable = true;
+    wireless.enable = false;
     usePredictableInterfaceNames = lib.mkForce true;
     hostName = "nixos-installer";
   };
