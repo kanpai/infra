@@ -79,7 +79,7 @@ let
       host = ./hosts/kanna;
       roles = [
         ./roles/kanna
-        ./roles/tor/exit
+        ./roles/tor/guard
         ./roles/monero
       ];
       keys.ssh = [
