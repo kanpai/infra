@@ -5,6 +5,7 @@ import json
 import pathlib
 import argparse
 import subprocess
+from braceexpand import braceexpand
 from glob import glob
 
 parser = argparse.ArgumentParser(description='Build NixOS images for installing on bare-metal machines')
@@ -52,7 +53,12 @@ buildCmd = subprocess.run([
 
 if buildCmd.returncode == 0:
     if args.flash_to != None:
-        images = glob('./result/iso/nixos*.iso')
+        images = [
+            path
+            for pattern in braceexpand('./result/{iso,sd-image}/nixos*.{iso,img}')
+            for path in glob(pattern)
+        ]
+
         if len(images) < 1:
             print('Could not determine ISO path; not flashing!')
             sys.exit(1)

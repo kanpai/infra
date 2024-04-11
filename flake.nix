@@ -40,7 +40,12 @@
           pkgs.deploy-rs
           pkgs.nixos-generators
         ];
-        development.python.enable = true;
+        development.python = {
+          enable = true;
+          package = pkgs.python311.withPackages (pkgs: with pkgs; [
+            braceexpand
+          ]);
+        };
         operations = {
           terranix.enable = true;
           nixos-anywhere.enable = true;
