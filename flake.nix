@@ -16,7 +16,7 @@
     };
     deploy-rs.url = "github:serokell/deploy-rs";
     agenix.url = "github:ryantm/agenix";
-    nixos-anywhere.url = "github:mibmo/nixos-anywhere";
+    nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     disko.url = "github:nix-community/disko";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
