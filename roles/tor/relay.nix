@@ -1,4 +1,4 @@
-{ host, config, lib, pkgs, ... }: {
+{ host, config, lib, pkgs-23_11, ... }: {
   services = {
     tor = {
       enable = true;
@@ -20,5 +20,5 @@
     };
   };
 
-  environment.systemPackages = [ pkgs.nyx ];
+  environment.systemPackages = [ pkgs-23_11.nyx ];
 }
