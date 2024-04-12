@@ -9,6 +9,7 @@
   hardware.enableRedistributableFirmware = true;
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_rpi4;
     initrd.availableKernelModules = [ "xhci_pci" "usb_storage" ];
     loader = {
       grub.enable = false;

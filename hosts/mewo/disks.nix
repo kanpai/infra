@@ -1,8 +1,8 @@
 { ... }:
 let
-  disks = [
-    { name = "main"; device = "/dev/disk/by-id/usb-SanDisk_Cruzer_Blade_4C532000060330111390-0:0"; }
-  ];
+  disks = {
+    main = { device = "/dev/disk/by-id/ata-Intenso_SSD_Sata_III_AA000000000000010250"; };
+  };
 
   mkDisk = { device, ... }: {
     inherit device;
@@ -11,7 +11,7 @@ let
       type = "gpt";
       partitions = {
         boot = {
-          size = "512M";
+          size = "1G";
           type = "EF00";
           priority = 0;
           content = {
@@ -20,24 +20,25 @@ let
             extraArgs = [ "-F32" ];
             mountpoint = "/boot";
             mountOptions = [ "noexec" ];
-            postMountHook = ''sh -c "cp /boot/* /mnt/boot/"'';
+            postMountHook = ''
+              # copy over firmware filesystem
+              mkdir --parents /mnt/firmware
+              mount /dev/disk/by-label/FIRMWARE /mnt/firmware
+              find /mnt/firmware -maxdepth 1 \
+                -execdir cp /mnt/{firmware,boot}/{} \;
+            '';
           };
         };
-        nix = {
-          size = "10G";
-          content = {
-            type = "filesystem";
-            format = "btrfs";
-            mountpoint = "/nix";
-          };
+        swap = {
+          size = "8G";
+          priority = 1;
+          content.type = "swap";
         };
-        persist = {
+        zfs = {
           size = "100%";
           content = {
-            type = "filesystem";
-            format = "ext4";
-            mountpoint = "/persist";
-            mountOptions = [ "noexec" ];
+            type = "zfs";
+            pool = "data";
           };
         };
       };
@@ -46,7 +47,7 @@ let
 in
 {
   disko.devices = {
-    disk = builtins.foldl' (acc: entry: acc // { ${entry.name} = mkDisk entry; }) { } disks;
+    disk = builtins.mapAttrs (_: mkDisk) disks;
 
     nodev."/" = {
       fsType = "ramfs";
@@ -55,6 +56,35 @@ in
         "mode=755"
         "noexec"
       ];
+    };
+
+    zpool.data = {
+      type = "zpool";
+      rootFsOptions = {
+        compression = "zstd";
+        "com.sun:auto-snapshot" = "false";
+      };
+
+      datasets = {
+        nix = {
+          type = "zfs_fs";
+          options.mountpoint = "legacy";
+          mountpoint = "/nix";
+          mountOptions = [ "noatime" ];
+        };
+        persist = {
+          type = "zfs_fs";
+          options.mountpoint = "legacy";
+          mountpoint = "/persist";
+          mountOptions = [ "noexec" ];
+          postMountHook = ''
+            # copy over host keys
+            mkdir --parents --mode=755 /mnt/persist/etc/ssh
+            find /etc/ssh/ -type f -name "ssh_host_*_key" \
+              -execdir cp {,/mnt/persist}/etc/ssh/{} \;
+          '';
+        };
+      };
     };
   };
 
