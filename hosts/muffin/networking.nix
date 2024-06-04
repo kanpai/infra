@@ -16,7 +16,7 @@ let
         "1.0.0.1"
       ];
       routes = [
-        { routeConfig.Gateway = "192.168.1.254"; }
+        { Gateway = "192.168.1.254"; }
       ];
     };
   };
