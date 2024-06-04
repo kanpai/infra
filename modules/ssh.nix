@@ -1,7 +1,6 @@
 { lib, config, settings, ... }:
-with lib;
 {
-  services.openssh = mkDefault {
+  services.openssh = lib.mkDefault {
     enable = true;
     allowSFTP = false;
     listenAddresses = lib.flatten (map
