@@ -67,6 +67,7 @@ let
       host = ./hosts/muffin;
       roles = [
         ./roles/muffin
+        ./roles/tor/guard
       ];
       keys.ssh = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/Xm/uSh6Ppy2lBtTr4ucw8mVBYWrqcDYLXmXN1XMTP"
