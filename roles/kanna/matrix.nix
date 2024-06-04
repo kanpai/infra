@@ -30,7 +30,7 @@ let
       }
       {
         matrix_id = "@mib:kanp.ai";
-        email_address = "mib@mib.dev";
+        email_address = "mib@kanp.ai";
         role = "m.role.admin";
       }
     ];
