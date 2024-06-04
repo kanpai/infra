@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# @TODO: migrate to python
+# @TODO: allow only prebuilding some systems
+
+configurations="$(nix flake show --json 2>/dev/null | jq -r '.nixosConfigurations | keys[] | select(startswith("installer-") | not)')"
+target="$(echo "$configurations" | sed -r 's/(.*)/.#nixosConfigurations.\1.config.system.build.toplevel/')"
+
+echo "building: $configurations" | tr '\n' ' ' 
+echo
+nom build --no-link $target
