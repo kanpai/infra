@@ -6,7 +6,7 @@ in
   security.acme = {
     acceptTerms = true;
     defaults = {
-      email = "mib@mib.dev";
+      email = "acme@kanp.ai";
       webroot = "/var/lib/acme/acme-challenge";
       server = "https://acme-v02.api.letsencrypt.org/directory";
       # defaults to production; testing should be done with staging
