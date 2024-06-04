@@ -24,7 +24,7 @@
   system.stateVersion = config.system.nixos.release;
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes";
+    settings.experimental-features = [ "flakes" "nix-command" ];
     registry.nixpkgs.flake = inputs.nixpkgs;
   };
 
