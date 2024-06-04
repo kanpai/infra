@@ -10,10 +10,16 @@
   services.openssh = {
     enable = true;
     ports = [ 12248 ];
-    settings.PermitRootLogin = "yes";
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = false;
+    };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] settings.admins;
+  users.users.root = {
+    password = "toor";
+    openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] settings.admins;
+  };
 
   system.stateVersion = config.system.nixos.release;
 
