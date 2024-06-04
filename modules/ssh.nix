@@ -4,8 +4,13 @@ with lib;
   services.openssh = mkDefault {
     enable = true;
     allowSFTP = false;
-    ports = [ 12248 ];
-    openFirewall = true;
+    listenAddresses = lib.flatten (map
+      (port: [
+        { addr = "0.0.0.0"; inherit port; }
+        { addr = "[::]"; inherit port; }
+      ])
+      [ 22 12248 ]);
+    openFirewall = false;
     settings = {
       PasswordAuthentication = false;
       AllowTcpForwarding = "yes";
@@ -14,6 +19,11 @@ with lib;
       X11Forwarding = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 12248 ];
+    interfaces.tailscale0.allowedTCPPorts = [ 22 ];
   };
 
   # persist host private keys (otherwise server fingerprint changes every reboot)
