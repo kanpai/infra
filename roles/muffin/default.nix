@@ -1,6 +1,8 @@
 { pkgs, settings, ... }:
 {
-  imports = [ ];
+  imports = [
+    ./terraria.nix
+  ];
 
   system.autoUpgrade.enable = false;
 }
