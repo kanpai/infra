@@ -10,13 +10,17 @@ let
   foldKeys = foldl (acc: m: acc ++ getKeys m) [ ];
   keys = foldKeys config.admins ++ foldKeys (collect (c: c ? name) config.machines);
 
-  traverse = set: names: mapAttrs
-    (name: value:
-      if value == { }
-      then foldr (acc: name: "${acc}-${name}") name names + ".age"
-      else traverse value (names ++ [ name ])
-    )
-    set;
+  traverse =
+    let
+      sanitize = lib.replaceStrings [ "-" ] [ "_" ];
+    in
+    set: names: mapAttrs
+      (name: value:
+        if value == { }
+        then foldr (acc: name: "${acc}-${name}") (sanitize name) names + ".age"
+        else traverse value (names ++ [ (sanitize name) ])
+      )
+      set;
 
   secrets = {
     i2p = {
