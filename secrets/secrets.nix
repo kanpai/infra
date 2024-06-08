@@ -35,6 +35,12 @@ let
     vpn.preauth = { };
     hentaiathome.key = { };
     nextcloud.admin.password = { };
+    binary-cache = lib.genAttrs [
+      "kanna"
+      "mewo"
+      "muffin"
+    ]
+      (_: { private-key = { }; });
   };
 in
 foldl
