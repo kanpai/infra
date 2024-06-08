@@ -10,29 +10,32 @@ let
   };
 in
 {
-  services.nginx.virtualHosts = {
-    "${domain}" = {
-      useACMEHost = domain;
-      forceSSL = true;
-      root = "${src}/www/";
-      locations =
-        let
-          serveFile = file: contentType: {
-            extraConfig = "add_header content-type '${contentType}';";
-            tryFiles = "/${file} =500";
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "${domain}" = {
+        useACMEHost = domain;
+        forceSSL = true;
+        root = "${src}/www/";
+        locations =
+          let
+            serveFile = file: contentType: {
+              extraConfig = "add_header content-type '${contentType}';";
+              tryFiles = "/${file} =500";
+            };
+          in
+          {
+            "/" = serveFile "main.html" "text/html";
+            "=/style" = serveFile "style.css" "text/css";
+            "=/gpg.txt" = serveFile "gpg.asc" "text/plain";
+            "=/gpg.asc" = serveFile "gpg.asc" "application/octet-stream";
           };
-        in
-        {
-          "/" = serveFile "main.html" "text/html";
-          "=/style" = serveFile "style.css" "text/css";
-          "=/gpg.txt" = serveFile "gpg.asc" "text/plain";
-          "=/gpg.asc" = serveFile "gpg.asc" "application/octet-stream";
-        };
-    };
-    "www.${domain}" = {
-      useACMEHost = domain;
-      forceSSL = true;
-      locations."/".return = "308 https://${domain}$request_uri";
+      };
+      "www.${domain}" = {
+        useACMEHost = domain;
+        forceSSL = true;
+        locations."/".return = "308 https://${domain}$request_uri";
+      };
     };
   };
 

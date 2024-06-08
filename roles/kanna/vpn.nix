@@ -47,22 +47,25 @@ lib.mkIf enable {
           tls_cert_path = "${certDir}/cert.pem";
         };
     };
-    nginx.virtualHosts = {
-      "${domain}" = {
-        useACMEHost = domain;
-        forceSSL = true;
-        locations = {
-          "/" = {
-            proxyWebsockets = true;
-            proxyPass = "https://${cfg.address}:${toString cfg.port}";
+    nginx = {
+      enable = true;
+      virtualHosts = {
+        "${domain}" = {
+          useACMEHost = domain;
+          forceSSL = true;
+          locations = {
+            "/" = {
+              proxyWebsockets = true;
+              proxyPass = "https://${cfg.address}:${toString cfg.port}";
+            };
+            "~^/web/([a-zA-Z0-9/~._-]*)".alias = "${headscale-ui}/$1";
           };
-          "~^/web/([a-zA-Z0-9/~._-]*)".alias = "${headscale-ui}/$1";
         };
-      };
-      "www.${domain}" = {
-        useACMEHost = domain;
-        forceSSL = true;
-        locations."/".return = "308 https://${domain}/$request_uri";
+        "www.${domain}" = {
+          useACMEHost = domain;
+          forceSSL = true;
+          locations."/".return = "308 https://${domain}/$request_uri";
+        };
       };
     };
   };

@@ -69,14 +69,17 @@ lib.mkIf true {
       user = "nextcloud";
     };
 
-    nginx.virtualHosts = {
-      "${serverName}" = {
-        useACMEHost = serverName;
-        forceSSL = true;
-      };
-      "www.${serverName}" = {
-        useACMEHost = serverName;
-        locations."/".return = "207 https://${serverName}";
+    nginx = {
+      enable = true;
+      virtualHosts = {
+        "${serverName}" = {
+          useACMEHost = serverName;
+          forceSSL = true;
+        };
+        "www.${serverName}" = {
+          useACMEHost = serverName;
+          locations."/".return = "207 https://${serverName}";
+        };
       };
     };
   };
