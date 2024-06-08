@@ -8,4 +8,4 @@ target="$(echo "$configurations" | sed -r 's/(.*)/.#nixosConfigurations.\1.confi
 
 echo "building: $configurations" | tr '\n' ' ' 
 echo
-nom build --no-link $target
+nom build --no-link $target "$@"
