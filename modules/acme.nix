@@ -14,6 +14,7 @@ in
     };
   };
 
+  # conditionally add services to acme group
   users.users = lib.mkIf cfg.acceptTerms (
     let
       addGroup = { user, enabled }: lib.attrsets.optionalAttrs enabled { ${user}.extraGroups = [ "acme" ]; };
