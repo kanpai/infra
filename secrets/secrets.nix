@@ -33,7 +33,6 @@ let
       tor.machines = [ "kanna" ];
     };
     nextcloud.admin.password.machines = [ "kanna" ];
-    terraria.env = { };
     vpn.preauth = { };
   };
 in
