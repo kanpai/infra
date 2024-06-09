@@ -1,4 +1,4 @@
-{ lib, pkgs, config, settings, ... }:
+{ klib, pkgs, config, ... }:
 let
   user = "remote-builder";
 in
@@ -8,7 +8,7 @@ in
       isSystemUser = true;
       group = user;
       shell = pkgs.bash;
-      openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.build) [ ] (lib.attrValues settings.admins);
+      openssh.authorizedKeys.keys = klib.getKeys "admins" [ "build" ];
     };
     groups.${user} = { };
   };

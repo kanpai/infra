@@ -1,6 +1,13 @@
-{ inputs, ... }:
+{ inputs, settings, ... }:
 let
   nixpkgs-lib = inputs.nixpkgs.lib;
+
+  inherit (nixpkgs-lib.attrsets) attrValues foldlAttrs optionalAttrs;
+  inherit (nixpkgs-lib.lists) flatten;
+  inherit (nixpkgs-lib.strings) hasPrefix removePrefix;
+
+  getKeys = configType: keyTypes:
+    flatten (map (m: map (type: m.keys.${type} or [ ]) keyTypes) (attrValues settings.${configType}));
 
   mkModule = module:
     args@{ ... }: {
@@ -13,19 +20,17 @@ let
 
       _module.args =
         let
-          inherit (nixpkgs-lib.strings) hasPrefix removePrefix;
-
           # "release" = [ "pkgs-0.1.0" "to-0.2.0" "allow-0.3.0];
           # i.e. `"23.11" = [ "hello-2.12.1" ];`
           permittedInsecurePackages = { };
         in
         rec {
           inherit inputs args;
-          settings = import ./config.nix { inherit lib; };
+          settings = import ./config.nix { lib = nixpkgs-lib // stripped; };
           host = module;
-          lib = nixpkgs-lib;
-        } // nixpkgs-lib.attrsets.foldlAttrs
-          (acc: name: input: acc // nixpkgs-lib.optionalAttrs
+          klib = stripped;
+        } // foldlAttrs
+          (acc: name: input: acc // optionalAttrs
             (hasPrefix "nixpkgs-" name)
             {
               ${removePrefix "nix" name} =
@@ -45,8 +50,10 @@ let
           inputs;
     };
 
-  lib = {
-    inherit mkModule;
+  stripped = {
+    inherit getKeys;
   };
+
+  full = stripped // { inherit mkModule; };
 in
-lib
+full

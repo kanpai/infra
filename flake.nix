@@ -25,7 +25,7 @@
   };
   outputs = inputs@{ self, nixpkgs, conch, ... }:
     let
-      lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; };
+      lib = inputs.nixpkgs.lib // import ./lib.nix { inherit inputs; settings = config; };
 
       config = import ./config.nix { inherit lib inputs; };
     in

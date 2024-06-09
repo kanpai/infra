@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, config, settings, ... }:
+{ klib, lib, inputs, config, ... }:
 {
   networking = {
     networkmanager.enable = true;
@@ -18,7 +18,7 @@
 
   users.users.root = {
     password = "toor";
-    openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] (lib.attrValues settings.admins);
+    openssh.authorizedKeys.keys = klib.getKeys "admins" [ "ssh" ];
   };
 
   system.stateVersion = config.system.nixos.release;

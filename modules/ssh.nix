@@ -1,4 +1,4 @@
-{ lib, config, settings, ... }:
+{ klib, lib, config, ... }:
 {
   services.openssh = lib.mkDefault {
     enable = true;
@@ -32,5 +32,5 @@
     else [ ];
 
   # add admin ssh keys
-  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] (lib.attrValues settings.admins);
+  users.users.root.openssh.authorizedKeys.keys = klib.getKeys "admins" [ "ssh" ];
 }
