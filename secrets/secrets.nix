@@ -28,10 +28,8 @@ let
       base.machines = [ "kanna" ];
       matrix.machines = [ "kanna" ];
     };
-    matrix = {
-      bridge.facebook.machines = [ "kanna" ];
-      tor.machines = [ "kanna" ];
-    };
+    tor.matrix.machines = [ "kanna" ];
+    matrix.bridge.facebook.machines = [ "kanna" ];
     nextcloud.admin.password.machines = [ "kanna" ];
     vpn.preauth = { };
   };

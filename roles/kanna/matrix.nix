@@ -61,7 +61,7 @@ in
     # tor
     tor.relay.onionServices.matrix = {
       version = 3;
-      secretKey = config.age.secrets.matrix-tor.path;
+      secretKey = config.age.secrets.tor-matrix.path;
       map = map (port: { inherit port; target.port = 80; }) [ 80 443 8443 ];
       settings.HiddenServiceSingleHopMode = true;
     };
@@ -160,8 +160,8 @@ in
     ];
 
   age.secrets = {
-    matrix-tor.file = ../../secrets/matrix-tor.age;
     matrix-bridge-facebook.file = ../../secrets/matrix-bridge-facebook.age;
+    tor-matrix.file = ../../secrets/tor-matrix.age;
   };
 
   persist.directories =
