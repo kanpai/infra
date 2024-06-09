@@ -15,18 +15,6 @@ let
   isEndpoint = set: set == { } || set ? "admins" || set ? "machines";
 
   secrets = {
-    i2p = {
-      base = { };
-      matrix = { };
-    };
-    terraria.env = { };
-    matrix = {
-      tor = { };
-      bridge.facebook = { };
-    };
-    vpn.preauth = { };
-    hentaiathome.key = { };
-    nextcloud.admin.password = { };
     binary-cache = lib.genAttrs [
       "kanna"
       "mewo"
@@ -35,6 +23,18 @@ let
       (host: {
         private-key.machines = [ host ];
       });
+    hentaiathome.key.machines = [ "kanna" ];
+    i2p = {
+      base.machines = [ "kanna" ];
+      matrix.machines = [ "kanna" ];
+    };
+    matrix = {
+      bridge.facebook.machines = [ "kanna" ];
+      tor.machines = [ "kanna" ];
+    };
+    nextcloud.admin.password.machines = [ "kanna" ];
+    terraria.env = { };
+    vpn.preauth = { };
   };
 in
 listToAttrs
