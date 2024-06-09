@@ -32,7 +32,7 @@ let
           inherit inputs args;
           settings = import ./config.nix { inherit lib; };
           host = module;
-          lib = nixpkgs-lib // lib;
+          lib = nixpkgs-lib;
         } // nixpkgs-lib.attrsets.foldlAttrs
           (acc: name: input: acc // nixpkgs-lib.optionalAttrs
             (hasPrefix "nixpkgs-" name)
