@@ -2,15 +2,6 @@
 let
   nixpkgs-lib = inputs.nixpkgs.lib;
 
-  recurse = pred: f: set:
-    builtins.mapAttrs
-      (name: value:
-        if pred value
-        then f value
-        else recurse pred f value
-      )
-      set;
-
   mkModule = module:
     args@{ ... }: {
       imports = with inputs; [
@@ -55,7 +46,7 @@ let
     };
 
   lib = {
-    inherit recurse mkModule;
+    inherit mkModule;
   };
 in
 lib
