@@ -32,5 +32,5 @@
     else [ ];
 
   # add admin ssh keys
-  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] settings.admins;
+  users.users.root.openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] (lib.attrValues settings.admins);
 }

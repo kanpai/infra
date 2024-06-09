@@ -13,6 +13,7 @@ let
         (machine: { ${machine.name} = machine; })
         (zipListsWith maker (rangeTo (length configs)) configs));
 
+  mkAdmin = key: admin: recursiveUpdate admin { };
   mkInstaller = key: spec:
     let
       installer =
@@ -36,8 +37,8 @@ let
     ];
   };
 
-  admins = [
-    {
+  admins = mapAttrs mkAdmin {
+    mib = {
       name = "mib";
       email = "mib@kanp.ai";
       keys = {
@@ -52,8 +53,8 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVLuvIz8TSxajOM1PyUGI3G6nylrsZo23EpdD4nSJ38 macadamia"
         ];
       };
-    }
-  ];
+    };
+  };
 
   installers = mapAttrs mkInstaller {
     x86_64-linux = { };

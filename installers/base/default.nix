@@ -18,7 +18,7 @@
 
   users.users.root = {
     password = "toor";
-    openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] settings.admins;
+    openssh.authorizedKeys.keys = builtins.foldl' (acc: admin: acc ++ admin.keys.ssh) [ ] (lib.attrValues settings.admins);
   };
 
   system.stateVersion = config.system.nixos.release;
