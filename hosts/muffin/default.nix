@@ -3,7 +3,7 @@
   imports = [
     ./disks.nix
     ./networking.nix
-    ./gpu.nix
+    #./gpu.nix
   ];
 
   nixpkgs.hostPlatform = host.system;
