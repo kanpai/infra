@@ -72,6 +72,7 @@ let
       host = ./hosts/muffin;
       roles = [
         ./roles/muffin
+        ./roles/remote-builder
         ./roles/tor/guard
       ];
       keys.ssh = [
@@ -85,6 +86,7 @@ let
       host = ./hosts/kanna;
       roles = [
         ./roles/kanna
+        ./roles/remote-builder
         ./roles/tor/guard
         ./roles/monero
       ];
@@ -100,6 +102,7 @@ let
       roles = [
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
         ./roles/mewo
+        ./roles/remote-builder
       ];
       keys.ssh = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJtD5IqU+Y3RkZKxQYR5fXRugRensSihj7diYAIgxEdI"
