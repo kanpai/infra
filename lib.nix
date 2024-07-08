@@ -6,6 +6,8 @@ let
   inherit (nixpkgs-lib.lists) flatten;
   inherit (nixpkgs-lib.strings) hasPrefix removePrefix;
 
+  setIf = key: cond: if cond then key else null;
+
   getKeys = configType: keyTypes:
     flatten (map (m: map (type: m.keys.${type} or [ ]) keyTypes) (attrValues settings.${configType}));
 
@@ -51,7 +53,7 @@ let
     };
 
   stripped = {
-    inherit getKeys;
+    inherit getKeys setIf;
   };
 
   full = stripped // { inherit mkModule; };
