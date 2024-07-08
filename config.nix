@@ -51,6 +51,7 @@ let
         build = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKiXYfgWXvTSAVnBPBObPB31KtVQ2XfyRpGSHJr8GsO9 hamilton"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVLuvIz8TSxajOM1PyUGI3G6nylrsZo23EpdD4nSJ38 macadamia"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII4gOgNmw46awzS4ohFvUmoZ+sM2ZJHEchnznsElc30q sakamoto"
         ];
       };
     };
