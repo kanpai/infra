@@ -28,7 +28,7 @@ let
         in
         rec {
           inherit inputs args;
-          settings = import ./config.nix { lib = nixpkgs-lib // stripped; };
+          settings = import ./config.nix { lib = stripped-lib; };
           host = module;
           klib = stripped;
         } // foldlAttrs
@@ -55,6 +55,7 @@ let
   stripped = {
     inherit getKeys setIf;
   };
+  stripped-lib = nixpkgs-lib // stripped;
 
   full = stripped // { inherit mkModule; };
 in
