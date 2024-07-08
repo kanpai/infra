@@ -11,25 +11,26 @@ let
   getKeys = configType: keyTypes:
     flatten (map (m: map (type: m.keys.${type} or [ ]) keyTypes) (attrValues settings.${configType}));
 
-  mkModule = module:
+  mkModule = host:
     args@{ ... }: {
       imports = with inputs; [
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
         agenix.nixosModules.age
-        module.host
-      ] ++ module.roles;
+        host.host
+      ] ++ host.roles;
 
       _module.args =
         let
           # "release" = [ "pkgs-0.1.0" "to-0.2.0" "allow-0.3.0];
           # i.e. `"23.11" = [ "hello-2.12.1" ];`
           permittedInsecurePackages = { };
+
+          overlays = import ./overlays { inherit inputs host; lib = stripped-lib; };
         in
-        rec {
-          inherit inputs args;
+        {
+          inherit inputs args host;
           settings = import ./config.nix { lib = stripped-lib; };
-          host = module;
           klib = stripped;
         } // foldlAttrs
           (acc: name: input: acc // optionalAttrs
@@ -38,14 +39,20 @@ let
               ${removePrefix "nix" name} =
                 let
                   version = removePrefix "nixpkgs-" name;
+                  hasInsecureOverride = permittedInsecurePackages ? ${version};
+                  hasOverlays = overlays ? ${version};
                 in
-                if !permittedInsecurePackages ? ${version}
-                then input.legacyPackages.${module.system}
-                else
-                  import input {
-                    inherit (module) system;
-                    config.permittedInsecurePackages = permittedInsecurePackages.${version};
-                  };
+                if hasInsecureOverride || hasOverlays
+                then
+                  import input
+                    {
+                      inherit (host) system;
+                      ${setIf "overlays" hasOverlays} = overlays.${version};
+                      config = {
+                        ${setIf "permittedInsecurePackages" hasInsecureOverride} = permittedInsecurePackages.${version};
+                      };
+                    }
+                else input.legacyPackages.${host.system};
             }
           )
           { }
