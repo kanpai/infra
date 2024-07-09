@@ -8,7 +8,6 @@
       scanDirectories = [
         "/boot"
         "/nix"
-        "/persist"
         "/tmp"
         "/var/tmp"
       ];
