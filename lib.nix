@@ -2,6 +2,7 @@
 let
   nixpkgs-lib = inputs.nixpkgs.lib;
 
+  inherit (builtins) replaceStrings;
   inherit (nixpkgs-lib.attrsets) attrValues foldlAttrs optionalAttrs;
   inherit (nixpkgs-lib.lists) flatten;
   inherit (nixpkgs-lib.strings) hasPrefix removePrefix;
@@ -38,7 +39,7 @@ let
             {
               ${removePrefix "nix" name} =
                 let
-                  version = removePrefix "nixpkgs-" name;
+                  version = replaceStrings [ "_" ] [ "." ] (removePrefix "nixpkgs-" name);
                   hasInsecureOverride = permittedInsecurePackages ? ${version};
                   hasOverlays = overlays ? ${version};
                 in
