@@ -2,7 +2,7 @@
   imports = [
     ./acme.nix
     ./age.nix
-    #./clamav.nix
+    ./clamav.nix
     ./impermanence.nix
     ./containers.nix
     ./security.nix
