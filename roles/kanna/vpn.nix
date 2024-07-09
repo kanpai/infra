@@ -9,16 +9,16 @@ let
 
   headscale-ui = pkgs.buildNpmPackage rec {
     pname = "headscale-ui";
-    version = "2023.01.30-beta-1";
+    version = "2024.02.24-beta1";
 
     src = pkgs.fetchFromGitHub {
       owner = "gurucomputing";
       repo = "headscale-ui";
       rev = version;
-      hash = "sha256-PtEiisTVlcAgEWDE3nSCdyd8L1hliORfkR3DbJOSqq0=";
+      hash = "sha256-jbyy8W/qAso2yb/hNsmVHiT0mJXInpEIejU+3IB9wJY=";
     };
 
-    npmDepsHash = "sha256-MePNbOPSe5wB8/6T3DLs+4+Qlr8f+7cCPs301il7iX8=";
+    npmDepsHash = "sha256-SHcsTfX2AnHR8fNCE2+JYV33DtZFQOqN7LSoV+fUu5A=";
     makeCacheWritable = true;
 
     installPhase = ''
