@@ -8,8 +8,14 @@ let
   inherit (nixpkgs-lib.strings) hasPrefix removePrefix;
   inherit (nixpkgs-lib.trivial) pipe;
 
+  # set key in attribute set based on condition
+  # usage: {
+  #  ${setIf "favourites" hasFavourites} = favourites;
+  # }
   setIf = key: cond: if cond then key else null;
 
+  # get keys of certain types from the config
+  # usage: `getKeys 'admins" [ "ssh" "build" ]` gets ssh and build keys from the configured admins
   getKeys = configType: keyTypes:
     flatten (map (m: map (type: m.keys.${type} or [ ]) keyTypes) (attrValues settings.${configType}));
 
@@ -19,6 +25,7 @@ let
       # i.e. `"23.11" = [ "hello-2.12.1" ];`
       permittedInsecurePackages = { };
 
+      # turn `nixpkgs-24_05` into `24.05`
       inputNixpkgsToVersion = name: replaceStrings [ "_" ] [ "." ] (removePrefix "nixpkgs-" name);
       overlays = import ./overlays { inherit inputs host; lib = stripped-lib; };
       nixpkgs' = filterAttrs (name: _: hasPrefix "nixpkgs-" name) inputs;
