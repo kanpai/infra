@@ -21,6 +21,7 @@
     disko.url = "github:nix-community/disko";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nix-fast-build.url = "github:Mic92/nix-fast-build";
 
     conduit.url = "gitlab:famedly/conduit/next";
   };
@@ -38,6 +39,7 @@
         packages = [
           inputs.agenix.packages.${system}.default
           inputs.disko.packages.${system}.default
+          inputs.nix-fast-build.packages.${system}.default
           pkgs.deploy-rs
           pkgs.nixos-generators
         ];
