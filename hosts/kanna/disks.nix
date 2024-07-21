@@ -43,7 +43,6 @@ in
       mountOptions = [
         "defaults"
         "mode=755"
-        "noexec"
       ];
     };
 
