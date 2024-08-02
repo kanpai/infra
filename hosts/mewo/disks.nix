@@ -50,7 +50,7 @@ in
     disk = builtins.mapAttrs (_: mkDisk) disks;
 
     nodev."/" = {
-      fsType = "ramfs";
+      fsType = "tmpfs";
       mountOptions = [
         "defaults"
         "mode=755"

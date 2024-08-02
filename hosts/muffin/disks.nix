@@ -66,7 +66,7 @@ in
     };
 
     nodev."/" = {
-      fsType = "ramfs";
+      fsType = "tmpfs";
       mountOptions = [
         "defaults"
         "mode=755"

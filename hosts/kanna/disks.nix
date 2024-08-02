@@ -39,7 +39,7 @@ in
     disk = builtins.foldl' (acc: disk: acc // { ${disk} = mkDisk { device = disk; }; }) { } disks;
 
     nodev."/" = {
-      fsType = "ramfs";
+      fsType = "tmpfs";
       mountOptions = [
         "defaults"
         "mode=755"
