@@ -45,6 +45,11 @@ lib.mkIf enable {
           server_url = "https://${domain}:${toString port}";
           tls_key_path = "${certDir}/key.pem";
           tls_cert_path = "${certDir}/cert.pem";
+          db_type = "postgres";
+          db_host = "/run/postgresql";
+          db_port = null;
+          db_name = "headscale";
+          db_user = "headscale";
         };
     };
     nginx = {
@@ -67,6 +72,10 @@ lib.mkIf enable {
           locations."/".return = "308 https://${domain}/$request_uri";
         };
       };
+    };
+    postgresql = {
+      ensureDatabases = [ "headscale" ];
+      ensureUsers = [{ name = "headscale"; ensureDBOwnership = true; }];
     };
   };
 
