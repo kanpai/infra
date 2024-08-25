@@ -1,9 +1,36 @@
 { lib, pkgs, config, ... }:
 let
+  inherit (lib.attrsets) attrsToList mapAttrsToList;
+  inherit (lib.lists) flatten;
+  inherit (lib.strings) concatStringsSep;
+
   domain = "kanp.ai";
   fqdn = "mail.${domain}";
 
   dbname = "maddy";
+
+  # inbox = [ alias1 alias2 ];
+  aliases = {
+    "mib@${domain}" = [
+      "abuse@${domain}"
+      "admin@${domain}"
+      "postmaster@${domain}"
+    ];
+  };
+
+  aliasEntry = ''
+    optional_step static {
+      ${concatStringsSep
+        "\n"
+        (flatten
+          (mapAttrsToList
+            (inbox: map (alias: "entry ${alias} ${inbox}"))
+            aliases
+          )
+        )
+      }
+    }
+  '';
 
   cfg = config.services.maddy;
 in
@@ -51,7 +78,7 @@ in
             optional_step static {
               entry postmaster postmaster@$(primary_domain)
             }
-            optional_step file /etc/maddy/aliases
+            ${aliasEntry}
           }
 
           msgpipeline local_routing {
