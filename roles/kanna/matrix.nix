@@ -111,7 +111,8 @@ in
     };
 
     mautrix-facebook = {
-      enable = cfg.enable;
+      # disabled due to libolm being deprecated
+      #enable = cfg.enable;
       configurePostgresql = false;
       environmentFile = config.age.secrets.matrix-bridge-facebook.path;
       settings = {
