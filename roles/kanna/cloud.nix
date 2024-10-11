@@ -13,6 +13,7 @@ let
       cookbook
       cospend
       gpoddersync
+      phonetrack
       previewgenerator
       ;
   };
