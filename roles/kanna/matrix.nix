@@ -50,7 +50,7 @@ in
       settings = {
         global = {
           server_name = serverName;
-          allow_registration = true;
+          allow_registration = false;
           enable_lightning_bolt = false;
           max_request_size = 104857600; # 100MiB
           database_backend = "rocksdb";
