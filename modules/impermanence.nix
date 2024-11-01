@@ -19,9 +19,13 @@ in
     };
   };
 
-  config.environment.persistence.main = {
-    # avoid infinite recursion; adds a little hassle when configuring hosts
-    enable = mkDefault false;
-    inherit (cfg) directories files;
+  config = {
+    environment.persistence.main = {
+      # avoid infinite recursion; adds a little hassle when configuring hosts
+      enable = mkDefault false;
+      inherit (cfg) directories files;
+    };
+    # causes issues, since impermance is expected to persist machine-id
+    systemd.services.systemd-machine-id-commit.enable = lib.mkDefault false;
   };
 }
