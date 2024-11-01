@@ -24,7 +24,7 @@ lib.mkIf true {
   services = {
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud29;
+      package = pkgs.nextcloud30;
 
       hostName = serverName;
       https = true;
