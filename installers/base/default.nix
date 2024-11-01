@@ -9,7 +9,7 @@
 
   services.openssh = {
     enable = true;
-    ports = [ 12248 ];
+    ports = [ 22 12248 ];
     settings = {
       PermitRootLogin = "yes";
       PasswordAuthentication = false;
