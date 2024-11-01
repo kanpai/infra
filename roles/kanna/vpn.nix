@@ -45,11 +45,16 @@ lib.mkIf enable {
           server_url = "https://${domain}:${toString port}";
           tls_key_path = "${certDir}/key.pem";
           tls_cert_path = "${certDir}/cert.pem";
-          db_type = "postgres";
-          db_host = "/run/postgresql";
-          db_port = null;
-          db_name = "headscale";
-          db_user = "headscale";
+          dns.base_domain = "kanpai";
+          database = {
+            type = "postgres";
+            postgres = {
+              host = "/run/postgresql";
+              port = null;
+              name = "headscale";
+              user = "headscale";
+            };
+          };
         };
     };
     nginx = {
