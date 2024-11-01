@@ -7,4 +7,7 @@
     compressImage = false;
     squashfsCompression = "gzip -Xcompression-level 1";
   };
+
+  # enable zfs support for rescue
+  boot.supportedFilesystems.zfs = true;
 }
